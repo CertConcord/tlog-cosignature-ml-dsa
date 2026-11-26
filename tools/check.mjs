@@ -13,6 +13,12 @@ for(const [path,hash] of Object.entries(json('vectors/manifest.json').sha256)) {
   assert.equal(createHash('sha256').update(readFileSync(join(root,path))).digest('hex'),hash,path);
 }
 const ids=new Set(json('cases.json').cases.map(value=>value.id));
-for(const vector of json('vectors/transport.json').cases) assert(ids.has(vector.id),vector.id);
+const caseMap=new Map(json('cases.json').cases.map(value=>[value.id,value]));
+for(const file of ['vectors/transport.json','vectors/key-discovery.json'])
+  for(const vector of json(file).cases) {
+    assert(ids.has(vector.id),vector.id);
+    assert.equal(caseMap.get(vector.id).expected,vector.expected==='primary'?'VALID':vector.expected,vector.id);
+    assert.equal(caseMap.get(vector.id).vector,file,vector.id);
+  }
 function walk(dir=''){for(const e of readdirSync(join(root,dir),{withFileTypes:true})){if(['.git','.runtime','node_modules'].includes(e.name))continue;const p=join(dir,e.name);if(e.isDirectory())walk(p);else{const t=readFileSync(join(root,p),'utf8');assert(!/\p{Script=Han}/u.test(t),p);assert(!/-----BEGIN (?:RSA |EC )?PRIVATE KEY-----/.test(t),p);assert(!/github_pat_[A-Za-z0-9_]{40,}|gh[pousr]_[A-Za-z0-9]{30,}/.test(t),p);}}}
 walk();console.log('Draft sources, cases and publication content verified');
