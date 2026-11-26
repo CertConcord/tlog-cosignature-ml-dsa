@@ -166,6 +166,41 @@
       "id": "key-discovery-short-hint",
       "expected": "NOTE_KEY_ID",
       "vector": "vectors/key-discovery.json"
+    },
+    {
+      "id": "integer-start-exact",
+      "expected": "VALID",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-end-exact",
+      "expected": "VALID",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-timestamp-exact",
+      "expected": "VALID",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-end-safe-number",
+      "expected": "VALID",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-start-unsafe-number",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-end-unsafe-number",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "integer-timestamp-unsafe-number",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-boundaries.json"
     }
   ]
 }

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "context": {
+    "name": "w",
+    "origin": "o",
+    "rootHex": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "cases": [
+    {
+      "id": "integer-start-exact",
+      "field": "start",
+      "start": "9007199254740993",
+      "end": "9007199254740994",
+      "timestamp": "0",
+      "numericType": "bigint",
+      "expected": "VALID",
+      "inputHex": "737562747265652f76310a0001770000000000000000016f002000000000000100200000000000020000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-end-exact",
+      "field": "end",
+      "start": "0",
+      "end": "9007199254740993",
+      "timestamp": "0",
+      "numericType": "bigint",
+      "expected": "VALID",
+      "inputHex": "737562747265652f76310a0001770000000000000000016f000000000000000000200000000000010000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-timestamp-exact",
+      "field": "timestamp",
+      "start": "0",
+      "end": "1",
+      "timestamp": "9007199254740993",
+      "numericType": "bigint",
+      "expected": "VALID",
+      "inputHex": "737562747265652f76310a0001770020000000000001016f000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-end-safe-number",
+      "field": "end",
+      "start": "0",
+      "end": "9007199254740991",
+      "timestamp": "0",
+      "numericType": "number",
+      "expected": "VALID",
+      "inputHex": "737562747265652f76310a0001770000000000000000016f0000000000000000001fffffffffffff0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-start-unsafe-number",
+      "field": "start",
+      "start": "9007199254740993",
+      "end": "9007199254740994",
+      "timestamp": "0",
+      "numericType": "number",
+      "expected": "SUBTREE_INTEGER",
+      "roundedNumber": "9007199254740992",
+      "forbiddenInputHex": "737562747265652f76310a0001770000000000000000016f002000000000000000200000000000020000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-end-unsafe-number",
+      "field": "end",
+      "start": "0",
+      "end": "9007199254740993",
+      "timestamp": "0",
+      "numericType": "number",
+      "expected": "SUBTREE_INTEGER",
+      "roundedNumber": "9007199254740992",
+      "forbiddenInputHex": "737562747265652f76310a0001770000000000000000016f000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "integer-timestamp-unsafe-number",
+      "field": "timestamp",
+      "start": "0",
+      "end": "1",
+      "timestamp": "9007199254740993",
+      "numericType": "number",
+      "expected": "SUBTREE_INTEGER",
+      "roundedNumber": "9007199254740992",
+      "forbiddenInputHex": "737562747265652f76310a0001770020000000000000016f000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}
