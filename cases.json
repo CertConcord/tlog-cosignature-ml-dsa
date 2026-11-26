@@ -153,6 +153,16 @@
       "vector": "vectors/key-discovery.json"
     },
     {
+      "id": "key-discovery-unrelated-utf8-name",
+      "expected": "VALID",
+      "vector": "vectors/key-discovery.json"
+    },
+    {
+      "id": "key-discovery-selected-utf8-name",
+      "expected": "SUBTREE_NAME",
+      "vector": "vectors/key-discovery.json"
+    },
+    {
       "id": "key-discovery-short-hint",
       "expected": "NOTE_KEY_ID",
       "vector": "vectors/key-discovery.json"

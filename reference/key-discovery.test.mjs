@@ -19,8 +19,8 @@ test('the exact admitted SPKI derives the published experimental hint', () => {
 
 for (const item of vector.cases) test('key discovery: ' + item.id, () => {
   const candidates = item.candidates.map(value => ({ name: value.name, publicKey: keys[value.key] }));
-  const select = () => selectMlDsa87Key(vector.name, Buffer.from(item.keyHint ?? vector.keyHint, 'hex'), candidates);
-  if (item.expected.endsWith('UNKNOWN') || item.expected.endsWith('AMBIGUOUS') || item.expected.endsWith('ID')) {
+  const select = () => selectMlDsa87Key(item.name ?? vector.name, Buffer.from(item.keyHint ?? vector.keyHint, 'hex'), candidates);
+  if (item.expected !== 'primary') {
     assert.throws(select, { code: item.expected });
   } else {
     assert.equal(select(), keys[item.expected]);
@@ -31,7 +31,7 @@ for (const item of vector.cases) test('key discovery: ' + item.id, () => {
 
 test('candidate records and capacity are bounded', () => {
   const hint = Buffer.from(vector.keyHint, 'hex');
-  assert.throws(() => selectMlDsa87Key(vector.name, hint, [{}]), { code: 'SUBTREE_NAME' });
+  assert.throws(() => selectMlDsa87Key(vector.name, hint, [{}]), { code: 'NOTE_KEY_CANDIDATES' });
   assert.throws(() => selectMlDsa87Key(vector.name, hint, [{ name: vector.name, publicKey: { type: 'public', asymmetricKeyType: 'ml-dsa-87' } }]), { code: 'NOTE_KEY_CANDIDATES' });
   assert.throws(() => selectMlDsa87Key(vector.name, hint, Array(65).fill({ name: vector.name, publicKey: keys.primary })), { code: 'NOTE_KEY_CANDIDATES' });
 });

@@ -93,6 +93,35 @@
       "expected": "NOTE_KEY_UNKNOWN"
     },
     {
+      "id": "key-discovery-unrelated-utf8-name",
+      "candidates": [
+        {
+          "name": "é.example",
+          "key": "legacy44"
+        },
+        {
+          "name": "witness.π",
+          "key": "second"
+        },
+        {
+          "name": "witness.example",
+          "key": "primary"
+        }
+      ],
+      "expected": "primary"
+    },
+    {
+      "id": "key-discovery-selected-utf8-name",
+      "name": "witness.π",
+      "candidates": [
+        {
+          "name": "witness.π",
+          "key": "second"
+        }
+      ],
+      "expected": "SUBTREE_NAME"
+    },
+    {
       "id": "key-discovery-short-hint",
       "keyHint": "0cfc3c",
       "candidates": [
