@@ -236,6 +236,41 @@
       "id": "input-type-array-timestamp",
       "expected": "SUBTREE_INTEGER",
       "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "request-type-bigint-start",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-safe-number-end",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-canonical-string-end",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-array-start",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-array-end",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-object-start",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-object-end",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
     }
   ]
 }

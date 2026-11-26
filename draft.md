@@ -49,6 +49,8 @@ The transport profile is `C2SP-20261007-MLDSA87-v2`, based on editor commit `a29
 
 `POST /sign-subtree` carries `subtree start end`, one base64 root hash, zero to 63 base64 consistency hashes, an empty line, and a checkpoint. Every line ends in LF. Integers are unsigned 64-bit decimal without leading zeros; hashes are exactly 32 bytes. The requested range must be aligned and end at or before the checkpoint size.
 
+The reference request encoder accepts exact `BigInt`, safe JavaScript `number`, or canonical unsigned decimal `string` values for start and end. It rejects arrays and objects before string conversion, even if their custom string form would be a valid decimal. The request-input-type vectors freeze the full canonical request bytes that such coercions formerly emitted. The parser of received HTTP text continues to accept only canonical decimal fields and returns exact `BigInt` values.
+
 The submitted checkpoint MUST contain exactly one note signature, from the selected witness key. It MUST NOT include an additional log or witness signature. The service authenticates that checkpoint with the selected witness's key and verifies subtree consistency before signing. The response MUST use the same witness key. Rotation to a different response key is not inferred from a key hint.
 
 A successful response is canonical padded base64 of exactly 4,627 raw ML-DSA-87 signature bytes followed by one LF. A signed-note response line, zero timestamp prefix, key-hint prefix, extra line or omitted padding is rejected. Neither a parser nor a length check authenticates a response: the client MUST verify the raw signature over the expected origin, range, root and witness name under its selected public key.

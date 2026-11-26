@@ -19,6 +19,10 @@ function decimal(text) {
   requireValue(value <= 0xffffffffffffffffn, 'SUBTREE_RANGE');
   return value;
 }
+function requestDecimal(value) {
+  requireValue(typeof value === 'bigint' || typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value)), 'SUBTREE_RANGE');
+  return decimal(String(value));
+}
 
 export function parseCheckpointEnvelope(note) {
   requireValue(typeof note === 'string' && Buffer.byteLength(note) <= 1048576 && !note.includes('\r') && note.endsWith('\n'), 'CHECKPOINT_ENCODING');
@@ -53,10 +57,9 @@ export function assertCheckpointLogSignature(checkpoint, { name, keyID }) {
 }
 
 function requestContext(value) {
-  requireValue([value.start, value.end].every(number => typeof number !== 'number' || Number.isSafeInteger(number)), 'SUBTREE_RANGE');
   const cp = parseCheckpointEnvelope(value.checkpoint);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
-  const start = decimal(String(value.start)), end = decimal(String(value.end));
+  const start = requestDecimal(value.start), end = requestDecimal(value.end);
   requireValue(Buffer.isBuffer(value.root) && value.root.length === 32 && Array.isArray(value.proof) && value.proof.length <= 63 && value.proof.every(hash => Buffer.isBuffer(hash) && hash.length === 32), 'SUBTREE_REQUEST');
   requireValue(end <= cp.size, 'SUBTREE_CHECKPOINT_RANGE');
   subtreeInput({ name: cp.signatures[0].name, origin: cp.origin, start, end, root: value.root, timestamp: 0 });
