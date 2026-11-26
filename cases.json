@@ -201,6 +201,41 @@
       "id": "integer-timestamp-unsafe-number",
       "expected": "SUBTREE_INTEGER",
       "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "input-type-bigint-start",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-safe-number-end",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-safe-number-timestamp",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-hex-string-start",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-leading-zero-end",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-boolean-timestamp",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-array-timestamp",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
     }
   ]
 }
