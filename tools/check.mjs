@@ -14,7 +14,7 @@ for(const [path,hash] of Object.entries(json('vectors/manifest.json').sha256)) {
 }
 const ids=new Set(json('cases.json').cases.map(value=>value.id));
 const caseMap=new Map(json('cases.json').cases.map(value=>[value.id,value]));
-for(const file of ['vectors/transport.json','vectors/key-discovery.json','vectors/integer-boundaries.json','vectors/integer-input-types.json','vectors/request-input-types.json'])
+for(const file of ['vectors/transport.json','vectors/key-discovery.json','vectors/integer-boundaries.json','vectors/integer-input-types.json','vectors/request-input-types.json','vectors/transport-bounds.json'])
   for(const vector of json(file).cases) {
     assert(ids.has(vector.id),vector.id);
     assert.equal(caseMap.get(vector.id).expected,vector.expected==='primary'?'VALID':vector.expected,vector.id);

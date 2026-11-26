@@ -14,7 +14,7 @@ function unbase64(text) {
   return value;
 }
 function decimal(text) {
-  requireValue(typeof text === 'string' && /^(0|[1-9][0-9]*)$/.test(text), 'SUBTREE_RANGE');
+  requireValue(typeof text === 'string' && text.length <= 20 && /^(0|[1-9][0-9]*)$/.test(text), 'SUBTREE_RANGE');
   const value = BigInt(text);
   requireValue(value <= 0xffffffffffffffffn, 'SUBTREE_RANGE');
   return value;
@@ -73,7 +73,12 @@ export function parseSubtreeRequest(text) {
   requireValue(typeof text === 'string' && Buffer.byteLength(text) <= 1048576 && !text.includes('\r'), 'SUBTREE_REQUEST');
   const cut = text.indexOf('\n\n');
   requireValue(cut > 0, 'SUBTREE_REQUEST');
-  const lines = text.slice(0, cut).split('\n'), range = /^subtree (0|[1-9][0-9]*) (0|[1-9][0-9]*)$/.exec(lines.shift());
+  const rangeEnd = text.indexOf('\n');
+  requireValue(rangeEnd > 0 && rangeEnd <= 49, 'SUBTREE_RANGE');
+  requireValue(cut <= 2929, 'SUBTREE_REQUEST');
+  const lines = text.slice(0, cut).split('\n'), rangeLine = lines.shift();
+  requireValue(lines.length <= 64, 'SUBTREE_REQUEST');
+  const range = /^subtree (0|[1-9][0-9]*) (0|[1-9][0-9]*)$/.exec(rangeLine);
   requireValue(range, 'SUBTREE_RANGE');
   return requestContext({ start: range[1], end: range[2], root: unbase64(lines.shift()), proof: lines.map(unbase64), checkpoint: text.slice(cut + 2) });
 }

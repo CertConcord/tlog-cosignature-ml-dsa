@@ -6,6 +6,7 @@
     "vectors/key-discovery.json": "592e4d7edc4b6bd311d8dce08d55e7aa7050cf8df1bff18381edc7a57d8ce7d8",
     "vectors/integer-boundaries.json": "178ff4a65fbb16b9c32ac44ab465de06ed43767f326e69747a92249387a817d8",
     "vectors/integer-input-types.json": "d99fdaf5e79cae8c48622259f9b27c87b0dfec9e579284ae55efcf6d9e2dd95e",
-    "vectors/request-input-types.json": "2042c11103056d85bbf46321f2eadedeecdcfdb39d67fcc42021eee3447afe40"
+    "vectors/request-input-types.json": "2042c11103056d85bbf46321f2eadedeecdcfdb39d67fcc42021eee3447afe40",
+    "vectors/transport-bounds.json": "7f2fa6daf1e90e4946a25a947e4ddceb023fe9513af5e30e55785b45efb9e2d0"
   }
 }
