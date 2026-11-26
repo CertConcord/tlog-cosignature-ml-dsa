@@ -15,6 +15,12 @@ const valueBytes = item => item.repeatByteHex
   ? Buffer.alloc(item.repeat, Number.parseInt(item.repeatByteHex, 16))
   : Buffer.from(item.decimalAsciiHex, 'hex');
 function wireBytes(item) {
+  if (item.target === 'checkpoint-signature-count') {
+    const noteCut = checkpoint.indexOf(Buffer.from('\n\n'));
+    const noteHead = checkpoint.subarray(0, noteCut + 2);
+    const lines = Array.from({ length: item.signatureCount }, (_, index) => `— ${item.namePrefix}${index} ${item.payloadBase64}\n`).join('');
+    return Buffer.concat([base.subarray(0, separator + 2), noteHead, Buffer.from(lines)]);
+  }
   if (item.target === 'max-prefix') {
     const first = checkpoint.indexOf(0x0a), second = checkpoint.indexOf(0x0a, first + 1);
     const maxCheckpoint = Buffer.concat([checkpoint.subarray(0, first + 1), Buffer.from('18446744073709551615'), checkpoint.subarray(second)]);
@@ -52,6 +58,7 @@ const cases = [
   { id: 'proof-count-64', target: 'proof-count', proofHashHex: '00'.repeat(32), proofCount: 64, expected: 'SUBTREE_REQUEST' },
   { id: 'proof-count-10000', target: 'proof-count', proofHashHex: '00'.repeat(32), proofCount: 10000, expected: 'SUBTREE_REQUEST', noBufferFrom: true },
   { id: 'proof-prefix-max-2929', target: 'max-prefix', proofHashHex: '00'.repeat(32), expected: 'VALID' },
+  { id: 'checkpoint-signatures-10000', target: 'checkpoint-signature-count', signatureCount: 10000, namePrefix: 'w', payloadBase64: 'AAAAAAA=', expected: 'SUBTREE_ONE_WITNESS', noBufferFrom: true },
 ].map(item => {
   const bytes = wireBytes(item);
   return { ...item, wireLength: bytes.length, wireSha256: createHash('sha256').update(bytes).digest('hex') };

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { parseCheckpointEnvelope, parseSubtreeRequest } from './transport.mjs';
+import { encodeSubtreeRequest, parseCheckpointEnvelope, parseSubtreeRequest } from './transport.mjs';
 
 const vectors = JSON.parse(readFileSync(new URL('../vectors/transport-bounds.json', import.meta.url), 'utf8'));
 const transport = JSON.parse(readFileSync(new URL('../vectors/transport.json', import.meta.url), 'utf8'));
@@ -10,8 +10,15 @@ const base = Buffer.from(transport.cases.find(item => item.id === 'one-witness-r
 assert.equal(createHash('sha256').update(base).digest('hex'), vectors.sourceWireSha256);
 const cut = base.indexOf(Buffer.from('\n\n'));
 const checkpoint = base.subarray(cut + 2);
+const baseRequest = parseSubtreeRequest(base.toString('utf8'));
 
 function bytesFor(item) {
+  if (item.target === 'checkpoint-signature-count') {
+    const noteCut = checkpoint.indexOf(Buffer.from('\n\n'));
+    const noteHead = checkpoint.subarray(0, noteCut + 2);
+    const lines = Array.from({ length: item.signatureCount }, (_, index) => `— ${item.namePrefix}${index} ${item.payloadBase64}\n`).join('');
+    return Buffer.concat([base.subarray(0, cut + 2), noteHead, Buffer.from(lines)]);
+  }
   if (item.target === 'max-prefix') {
     const first = checkpoint.indexOf(0x0a), second = checkpoint.indexOf(0x0a, first + 1);
     const maxCheckpoint = Buffer.concat([checkpoint.subarray(0, first + 1), Buffer.from('18446744073709551615'), checkpoint.subarray(second)]);
@@ -44,7 +51,9 @@ for (const item of vectors.cases) {
     assert.equal(createHash('sha256').update(bytes).digest('hex'), item.wireSha256);
     const parse = () => item.target === 'checkpoint-size'
       ? parseCheckpointEnvelope(bytes.toString('utf8'))
-      : parseSubtreeRequest(bytes.toString('utf8'));
+      : item.target === 'checkpoint-signature-count'
+        ? encodeSubtreeRequest({ ...baseRequest, checkpoint: bytes.subarray(cut + 2).toString('utf8') })
+        : parseSubtreeRequest(bytes.toString('utf8'));
     if (item.expected === 'VALID') {
       const parsed = parse();
       if (item.target === 'checkpoint-size') assert.equal(parsed.size, 0xffffffffffffffffn);
@@ -64,6 +73,7 @@ for (const item of vectors.cases) {
       Buffer.from = () => { throw new Error('BUFFER_FROM_INVOKED'); };
       try { assert.throws(parse, { code: item.expected }); }
       finally { Buffer.from = original; }
+      if (item.target === 'checkpoint-signature-count') assert.throws(() => parseSubtreeRequest(bytes.toString('utf8')), { code: item.expected });
     } else if (item.noBigInt) {
       const original = globalThis.BigInt;
       globalThis.BigInt = () => { throw new Error('BIGINT_INVOKED'); };

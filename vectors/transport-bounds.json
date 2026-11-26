@@ -109,6 +109,17 @@
       "expected": "VALID",
       "wireLength": 9241,
       "wireSha256": "353273104b3fdf035be3c7449fda55a3cc70b7c09524eca505c9e396de4bdca7"
+    },
+    {
+      "id": "checkpoint-signatures-10000",
+      "target": "checkpoint-signature-count",
+      "signatureCount": 10000,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "noBufferFrom": true,
+      "wireLength": 189018,
+      "wireSha256": "171c6fbc36ae37469bd1773e84a59618715c277b307107264f7cc9cd1bd8aca2"
     }
   ]
 }

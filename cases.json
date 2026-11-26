@@ -331,6 +331,11 @@
       "id": "proof-prefix-max-2929",
       "expected": "VALID",
       "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "checkpoint-signatures-10000",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/transport-bounds.json"
     }
   ]
 }

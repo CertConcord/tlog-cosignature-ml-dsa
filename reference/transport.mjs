@@ -57,6 +57,16 @@ export function assertCheckpointLogSignature(checkpoint, { name, keyID }) {
 }
 
 function requestContext(value) {
+  if (typeof value.checkpoint === 'string') {
+    const separator = value.checkpoint.indexOf('\n\n');
+    if (separator > 0) {
+      const firstEnd = value.checkpoint.indexOf('\n', separator + 2);
+      if (firstEnd >= 0) {
+        const secondEnd = value.checkpoint.indexOf('\n', firstEnd + 1);
+        requireValue(secondEnd < 0 || secondEnd === value.checkpoint.length - 1, 'SUBTREE_ONE_WITNESS');
+      }
+    }
+  }
   const cp = parseCheckpointEnvelope(value.checkpoint);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
   const start = requestDecimal(value.start), end = requestDecimal(value.end);
