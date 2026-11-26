@@ -1,6 +1,6 @@
 import {createHash,createPublicKey,KeyObject,verify} from 'node:crypto';
 const requireValue = (condition,code) => {if(!condition){const e=new Error(code);e.code=code;throw e;}};
-const exactInteger = n => {requireValue(typeof n!=='number'||Number.isSafeInteger(n),'SUBTREE_INTEGER');return BigInt(n);};
+const exactInteger = n => {requireValue(typeof n==='bigint'||(typeof n==='number'&&Number.isSafeInteger(n)),'SUBTREE_INTEGER');return BigInt(n);};
 const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
 const text = s => {requireValue(typeof s==='string'&&/^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(s),'SUBTREE_NAME');const b=Buffer.from(s);return Buffer.concat([Buffer.from([b.length]),b]);};
 export function mlDsa87KeyID(name,key) {

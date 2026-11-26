@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "profile": "C2SP-20261007-MLDSA87-v2",
+  "sourceCase": "vectors/transport.json#one-witness-request",
+  "sourceWireSha256": "18d30f65815dcd046dee6e652debda085c39bb25b42db1c0e7e1d48282cd7512",
+  "encoding": "decimalAsciiHex or repeatByteHex plus repeat gives exact replacement bytes",
+  "cases": [
+    {
+      "id": "decimal-checkpoint-max-u64",
+      "target": "checkpoint-size",
+      "decimalAsciiHex": "3138343436373434303733373039353531363135",
+      "expected": "VALID",
+      "wireLength": 6310,
+      "wireSha256": "53244935a76bd3faeb8e63243879936d41a4bc3592ce6250e5153909fb4703a6"
+    },
+    {
+      "id": "decimal-checkpoint-over-u64",
+      "target": "checkpoint-size",
+      "decimalAsciiHex": "3138343436373434303733373039353531363136",
+      "expected": "SUBTREE_RANGE",
+      "wireLength": 6310,
+      "wireSha256": "a956e62f128ec87f25968d4bba21a799569c5978be6412357baad20b795c03f3"
+    },
+    {
+      "id": "decimal-checkpoint-21-digits",
+      "target": "checkpoint-size",
+      "decimalAsciiHex": "313030303030303030303030303030303030303030",
+      "expected": "SUBTREE_RANGE",
+      "noBigInt": true,
+      "wireLength": 6311,
+      "wireSha256": "b43f887e0503ec8de7d56d98b23841d7786bc6d1bd5fcf88e6c89c2ddbf2b059"
+    },
+    {
+      "id": "decimal-checkpoint-million-digits",
+      "target": "checkpoint-size",
+      "repeatByteHex": "39",
+      "repeat": 1000000,
+      "expected": "SUBTREE_RANGE",
+      "noBigInt": true,
+      "wireLength": 1006290,
+      "wireSha256": "78d783a83186e3f219762ae2ff31436de823a7ea4c06c260c1071215f8548ea0"
+    },
+    {
+      "id": "decimal-request-canonical",
+      "target": "request-range",
+      "decimalAsciiHex": "302033",
+      "expected": "VALID",
+      "wireLength": 6349,
+      "wireSha256": "18d30f65815dcd046dee6e652debda085c39bb25b42db1c0e7e1d48282cd7512"
+    },
+    {
+      "id": "decimal-request-start-over-u64",
+      "target": "request-start",
+      "decimalAsciiHex": "3138343436373434303733373039353531363136",
+      "expected": "SUBTREE_RANGE",
+      "wireLength": 6368,
+      "wireSha256": "8881b7879dc63472da326f2e3ac032bb3ed2cad0886a533a9eab83f6668b2959"
+    },
+    {
+      "id": "decimal-request-start-21-digits",
+      "target": "request-start",
+      "decimalAsciiHex": "313030303030303030303030303030303030303030",
+      "expected": "SUBTREE_RANGE",
+      "wireLength": 6369,
+      "wireSha256": "0f64ded4baa01cec22a58022997b3e11640c6da58619cd3b6c782f239c5f5474"
+    },
+    {
+      "id": "decimal-request-start-million-digits",
+      "target": "request-start",
+      "repeatByteHex": "39",
+      "repeat": 1000000,
+      "expected": "SUBTREE_RANGE",
+      "noBigInt": true,
+      "wireLength": 1006348,
+      "wireSha256": "c4417f2ffcd5792e67efe3d8e2f4eca56cad8505be5667c9673bc0013bab3f6e"
+    },
+    {
+      "id": "proof-count-63",
+      "target": "proof-count",
+      "proofHashHex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proofCount": 63,
+      "expected": "VALID",
+      "wireLength": 9184,
+      "wireSha256": "a44ef441430398b62f6378f70e45cce506031f5ac8a22caf91302d9ce7d0dc12"
+    },
+    {
+      "id": "proof-count-64",
+      "target": "proof-count",
+      "proofHashHex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proofCount": 64,
+      "expected": "SUBTREE_REQUEST",
+      "wireLength": 9229,
+      "wireSha256": "561fd9b1c8b85935f85c12be4c673dc183e6c11da291f2bb3974cf61b63759fb"
+    },
+    {
+      "id": "proof-count-10000",
+      "target": "proof-count",
+      "proofHashHex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proofCount": 10000,
+      "expected": "SUBTREE_REQUEST",
+      "noBufferFrom": true,
+      "wireLength": 456349,
+      "wireSha256": "3bfb5995751bec94c04247b0fe4129e1853c94899a51b6badb5b8a95fb7a7e5a"
+    },
+    {
+      "id": "proof-prefix-max-2929",
+      "target": "max-prefix",
+      "proofHashHex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expected": "VALID",
+      "wireLength": 9241,
+      "wireSha256": "353273104b3fdf035be3c7449fda55a3cc70b7c09524eca505c9e396de4bdca7"
+    },
+    {
+      "id": "checkpoint-signatures-10000",
+      "target": "checkpoint-signature-count",
+      "signatureCount": 10000,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "noBufferFrom": true,
+      "wireLength": 189018,
+      "wireSha256": "171c6fbc36ae37469bd1773e84a59618715c277b307107264f7cc9cd1bd8aca2"
+    }
+  ]
+}

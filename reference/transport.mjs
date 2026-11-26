@@ -14,10 +14,14 @@ function unbase64(text) {
   return value;
 }
 function decimal(text) {
-  requireValue(typeof text === 'string' && /^(0|[1-9][0-9]*)$/.test(text), 'SUBTREE_RANGE');
+  requireValue(typeof text === 'string' && text.length <= 20 && /^(0|[1-9][0-9]*)$/.test(text), 'SUBTREE_RANGE');
   const value = BigInt(text);
   requireValue(value <= 0xffffffffffffffffn, 'SUBTREE_RANGE');
   return value;
+}
+function requestDecimal(value) {
+  requireValue(typeof value === 'bigint' || typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value)), 'SUBTREE_RANGE');
+  return decimal(String(value));
 }
 
 export function parseCheckpointEnvelope(note) {
@@ -53,10 +57,19 @@ export function assertCheckpointLogSignature(checkpoint, { name, keyID }) {
 }
 
 function requestContext(value) {
-  requireValue([value.start, value.end].every(number => typeof number !== 'number' || Number.isSafeInteger(number)), 'SUBTREE_RANGE');
+  if (typeof value.checkpoint === 'string') {
+    const separator = value.checkpoint.indexOf('\n\n');
+    if (separator > 0) {
+      const firstEnd = value.checkpoint.indexOf('\n', separator + 2);
+      if (firstEnd >= 0) {
+        const secondEnd = value.checkpoint.indexOf('\n', firstEnd + 1);
+        requireValue(secondEnd < 0 || secondEnd === value.checkpoint.length - 1, 'SUBTREE_ONE_WITNESS');
+      }
+    }
+  }
   const cp = parseCheckpointEnvelope(value.checkpoint);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
-  const start = decimal(String(value.start)), end = decimal(String(value.end));
+  const start = requestDecimal(value.start), end = requestDecimal(value.end);
   requireValue(Buffer.isBuffer(value.root) && value.root.length === 32 && Array.isArray(value.proof) && value.proof.length <= 63 && value.proof.every(hash => Buffer.isBuffer(hash) && hash.length === 32), 'SUBTREE_REQUEST');
   requireValue(end <= cp.size, 'SUBTREE_CHECKPOINT_RANGE');
   subtreeInput({ name: cp.signatures[0].name, origin: cp.origin, start, end, root: value.root, timestamp: 0 });
@@ -70,7 +83,12 @@ export function parseSubtreeRequest(text) {
   requireValue(typeof text === 'string' && Buffer.byteLength(text) <= 1048576 && !text.includes('\r'), 'SUBTREE_REQUEST');
   const cut = text.indexOf('\n\n');
   requireValue(cut > 0, 'SUBTREE_REQUEST');
-  const lines = text.slice(0, cut).split('\n'), range = /^subtree (0|[1-9][0-9]*) (0|[1-9][0-9]*)$/.exec(lines.shift());
+  const rangeEnd = text.indexOf('\n');
+  requireValue(rangeEnd > 0 && rangeEnd <= 49, 'SUBTREE_RANGE');
+  requireValue(cut <= 2929, 'SUBTREE_REQUEST');
+  const lines = text.slice(0, cut).split('\n'), rangeLine = lines.shift();
+  requireValue(lines.length <= 64, 'SUBTREE_REQUEST');
+  const range = /^subtree (0|[1-9][0-9]*) (0|[1-9][0-9]*)$/.exec(rangeLine);
   requireValue(range, 'SUBTREE_RANGE');
   return requestContext({ start: range[1], end: range[2], root: unbase64(lines.shift()), proof: lines.map(unbase64), checkpoint: text.slice(cut + 2) });
 }

@@ -201,6 +201,141 @@
       "id": "integer-timestamp-unsafe-number",
       "expected": "SUBTREE_INTEGER",
       "vector": "vectors/integer-boundaries.json"
+    },
+    {
+      "id": "input-type-bigint-start",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-safe-number-end",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-safe-number-timestamp",
+      "expected": "VALID",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-hex-string-start",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-leading-zero-end",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-boolean-timestamp",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "input-type-array-timestamp",
+      "expected": "SUBTREE_INTEGER",
+      "vector": "vectors/integer-input-types.json"
+    },
+    {
+      "id": "request-type-bigint-start",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-safe-number-end",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-canonical-string-end",
+      "expected": "VALID",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-array-start",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-array-end",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-object-start",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "request-type-object-end",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/request-input-types.json"
+    },
+    {
+      "id": "decimal-checkpoint-max-u64",
+      "expected": "VALID",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-checkpoint-over-u64",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-checkpoint-21-digits",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-checkpoint-million-digits",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-request-canonical",
+      "expected": "VALID",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-request-start-over-u64",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-request-start-21-digits",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "decimal-request-start-million-digits",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "proof-count-63",
+      "expected": "VALID",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "proof-count-64",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "proof-count-10000",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "proof-prefix-max-2929",
+      "expected": "VALID",
+      "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "checkpoint-signatures-10000",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/transport-bounds.json"
     }
   ]
 }
