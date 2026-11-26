@@ -1,6 +1,7 @@
 import {createHash,createPublicKey,KeyObject,verify} from 'node:crypto';
 const requireValue = (condition,code) => {if(!condition){const e=new Error(code);e.code=code;throw e;}};
-const u64 = n => {n=BigInt(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
+const exactInteger = n => {requireValue(typeof n!=='number'||Number.isSafeInteger(n),'SUBTREE_INTEGER');return BigInt(n);};
+const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
 const text = s => {requireValue(typeof s==='string'&&/^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(s),'SUBTREE_NAME');const b=Buffer.from(s);return Buffer.concat([Buffer.from([b.length]),b]);};
 export function mlDsa87KeyID(name,key) {
   text(name);
@@ -32,7 +33,7 @@ export function selectMlDsa87Key(name,keyHint,candidates) {
   return selected;
 }
 export function subtreeInput({name,origin,start=0n,end,root,timestamp=0}) {
-  start=BigInt(start);end=BigInt(end);timestamp=BigInt(timestamp);
+  start=exactInteger(start);end=exactInteger(end);timestamp=exactInteger(timestamp);
   requireValue(start>=0n&&end>=start&&end<=0xffffffffffffffffn&&(!timestamp||start===0n),'SUBTREE_CONTEXT');
   let width=1n;while(width<end-start)width<<=1n;
   requireValue(start%width===0n&&Buffer.isBuffer(root)&&root.length===32,'SUBTREE_CONTEXT');

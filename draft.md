@@ -37,6 +37,8 @@ Use pure ML-DSA-87 with empty context over the existing subtree input:
 
 Names and origins use the selected printable ASCII subset of the upstream name profile, excluding space, control characters and `+`, and fit their one-byte length. Other upstream UTF-8 names are outside this selected profile. Integer ranges and subtree alignment follow the pinned MTC/C2SP rules. A nonzero timestamp requires a prefix subtree starting at zero. The origin, range, root and witness name are all authenticated. Hashing the message again before a pure-message signing call changes the protocol.
 
+The reference encoder accepts exact `BigInt` values across the unsigned 64-bit range and safe JavaScript `number` integers. It rejects unsafe `number` values for start, end and timestamp before conversion, because JavaScript may already have rounded those values and signed different bytes. The frozen integer-boundary vectors distinguish the exact bytes from the forbidden rounded bytes.
+
 For a checkpoint signed note, the signature payload is key_hint || uint64_be(timestamp) || signature, encoded with canonical padded base64 on the existing witness-signature line. A subtree cosignature is only the raw signature: it has no key hint or timestamp prefix. Its signed input still contains the fixed zero timestamp. Base64url, omitted padding, carriage returns and trailing bytes are not interchangeable encodings.
 
 ML-DSA-87 signatures contain 4627 bytes. The key is supplied as an exact admitted SPKI; a public key with another algorithm is rejected. Reference verification uses Node's cryptographic stack, not a new ML-DSA implementation.
