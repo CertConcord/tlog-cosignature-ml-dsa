@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "profile": "C2SP-20261007-MLDSA87-v2",
+  "sourceCase": "vectors/transport.json#one-witness-request",
+  "sourceRequestSha256": "18d30f65815dcd046dee6e652debda085c39bb25b42db1c0e7e1d48282cd7512",
+  "sourceCheckpointSha256": "4d723a5b9748e692fd830e3ffb61c29522b79faa52d69a1915ff79f83dfb6ec5",
+  "encoding": "UTF8(checkpoint) || repeated UTF8(\"— \" + namePrefix + decimal(index) + \" \" + payloadBase64 + LF)",
+  "cases": [
+    {
+      "id": "standalone-one-witness",
+      "operation": "verify",
+      "extraCount": 0,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "VALID",
+      "expectedBase64Decodes": 2,
+      "signatureLineCount": 1,
+      "wireLength": 6291,
+      "wireSha256": "4d723a5b9748e692fd830e3ffb61c29522b79faa52d69a1915ff79f83dfb6ec5"
+    },
+    {
+      "id": "generic-two-signature-note",
+      "operation": "parse",
+      "extraCount": 1,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "VALID",
+      "expectedBase64Decodes": 3,
+      "signatureLineCount": 2,
+      "wireLength": 6307,
+      "wireSha256": "ed444931b22359137f578cd628a1015e2df5147c7aa9becb6afd917a40c266f5"
+    },
+    {
+      "id": "standalone-two-signature-note",
+      "operation": "verify",
+      "extraCount": 1,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "expectedBase64Decodes": 1,
+      "signatureLineCount": 2,
+      "wireLength": 6307,
+      "wireSha256": "ed444931b22359137f578cd628a1015e2df5147c7aa9becb6afd917a40c266f5"
+    },
+    {
+      "id": "standalone-10000-signature-note",
+      "operation": "verify",
+      "extraCount": 9999,
+      "namePrefix": "w",
+      "payloadBase64": "AAAAAAA=",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "expectedBase64Decodes": 1,
+      "signatureLineCount": 10000,
+      "wireLength": 195162,
+      "wireSha256": "75688f065322041f3a45f4adb0ae5298ae2b58422f6d9197cae298a3f00bf9cc"
+    },
+    {
+      "id": "standalone-malformed-extra-signature",
+      "operation": "verify",
+      "extraCount": 1,
+      "namePrefix": "w",
+      "payloadBase64": "!",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "expectedBase64Decodes": 1,
+      "signatureLineCount": 2,
+      "wireLength": 6300,
+      "wireSha256": "071e4825b8ce8eda22cd53763ddb37de1574cb6657d244e01771139b0a054ca4"
+    }
+  ]
+}

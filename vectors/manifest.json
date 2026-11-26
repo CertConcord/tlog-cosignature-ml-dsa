@@ -7,6 +7,7 @@
     "vectors/integer-boundaries.json": "178ff4a65fbb16b9c32ac44ab465de06ed43767f326e69747a92249387a817d8",
     "vectors/integer-input-types.json": "d99fdaf5e79cae8c48622259f9b27c87b0dfec9e579284ae55efcf6d9e2dd95e",
     "vectors/request-input-types.json": "2042c11103056d85bbf46321f2eadedeecdcfdb39d67fcc42021eee3447afe40",
-    "vectors/transport-bounds.json": "6f41c3d4bdd0141a0a1d74be936700c9c1cee9dadc59a0cc39661640570f3660"
+    "vectors/transport-bounds.json": "6f41c3d4bdd0141a0a1d74be936700c9c1cee9dadc59a0cc39661640570f3660",
+    "vectors/standalone-checkpoint-bound.json": "66cd2f4cc6a7855d2f9eca7a248370f2d41dd001f82b208e0f4f1242c56c2f3d"
   }
 }
