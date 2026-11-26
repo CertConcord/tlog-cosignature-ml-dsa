@@ -336,6 +336,31 @@
       "id": "checkpoint-signatures-10000",
       "expected": "SUBTREE_ONE_WITNESS",
       "vector": "vectors/transport-bounds.json"
+    },
+    {
+      "id": "standalone-one-witness",
+      "expected": "VALID",
+      "vector": "vectors/standalone-checkpoint-bound.json"
+    },
+    {
+      "id": "generic-two-signature-note",
+      "expected": "VALID",
+      "vector": "vectors/standalone-checkpoint-bound.json"
+    },
+    {
+      "id": "standalone-two-signature-note",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/standalone-checkpoint-bound.json"
+    },
+    {
+      "id": "standalone-10000-signature-note",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/standalone-checkpoint-bound.json"
+    },
+    {
+      "id": "standalone-malformed-extra-signature",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/standalone-checkpoint-bound.json"
     }
   ]
 }

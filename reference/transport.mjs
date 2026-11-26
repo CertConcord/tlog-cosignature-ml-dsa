@@ -24,7 +24,7 @@ function requestDecimal(value) {
   return decimal(String(value));
 }
 
-export function parseCheckpointEnvelope(note) {
+function parseCheckpoint(note, oneSignature) {
   requireValue(typeof note === 'string' && Buffer.byteLength(note) <= 1048576 && !note.includes('\r') && note.endsWith('\n'), 'CHECKPOINT_ENCODING');
   const cut = note.indexOf('\n\n');
   requireValue(cut > 0, 'CHECKPOINT_ENCODING');
@@ -34,7 +34,9 @@ export function parseCheckpointEnvelope(note) {
   const size = decimal(lines[1]), root = unbase64(lines[2]);
   requireValue(root.length === 32, 'CHECKPOINT_ROOT');
   const seen = new Set();
-  const signatures = note.slice(cut + 2, -1).split('\n').map(line => {
+  const signatureLines = note.slice(cut + 2, -1);
+  if (oneSignature) requireValue(!signatureLines.includes('\n'), 'SUBTREE_ONE_WITNESS');
+  const signatures = signatureLines.split('\n').map(line => {
     const match = /^— ([\x21-\x2a\x2c-\x7e]{1,255}) ([A-Za-z0-9+/=]+)$/.exec(line);
     requireValue(match, 'CHECKPOINT_SIGNATURE');
     const bytes = unbase64(match[2]);
@@ -45,6 +47,9 @@ export function parseCheckpointEnvelope(note) {
     return { name: match[1], keyID, signature: bytes.subarray(4) };
   });
   return { origin: lines[0], size, root, body, signatures, note };
+}
+export function parseCheckpointEnvelope(note) {
+  return parseCheckpoint(note, false);
 }
 
 // This is a structural gate. Applications MUST also verify the log signature
@@ -97,7 +102,7 @@ export function parseSubtreeRequest(text) {
 // the request's one checkpoint signature under the same selected response key.
 export function verifySubtreeCheckpoint(checkpoint, { name, publicKey, at, maxFutureSkew = 30 }) {
   requireValue(Number.isSafeInteger(at) && at >= 0 && Number.isSafeInteger(maxFutureSkew) && maxFutureSkew >= 0, 'CHECKPOINT_TIME');
-  const cp = parseCheckpointEnvelope(checkpoint);
+  const cp = parseCheckpoint(checkpoint, true);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
   const selected = cp.signatures[0];
   requireValue(selected.name === name && same(selected.keyID, mlDsa87KeyID(name, publicKey)), 'SUBTREE_WITNESS_KEY');
