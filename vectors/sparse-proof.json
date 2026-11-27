@@ -118,6 +118,22 @@
         "a"
       ],
       "forbiddenWire": "one"
+    },
+    {
+      "id": "proof-proxy-revoked",
+      "length": 1,
+      "entries": [
+        {
+          "index": 0,
+          "hash": "a"
+        }
+      ],
+      "slotKind": "proxy-revoked",
+      "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [
+        "a"
+      ],
+      "forbiddenWire": "one"
     }
   ]
 }

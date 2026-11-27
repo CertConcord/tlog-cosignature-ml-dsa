@@ -39,6 +39,10 @@ for (const item of vectors.cases) {
       } });
     } else if (item.slotKind === 'proxy-transparent') {
       proof = new Proxy(proof, {});
+    } else if (item.slotKind === 'proxy-revoked') {
+      const wrapped = Proxy.revocable(proof, {});
+      wrapped.revoke();
+      proof = wrapped.proxy;
     }
     const request = { ...base, proof };
     if (item.expected === 'VALID') {

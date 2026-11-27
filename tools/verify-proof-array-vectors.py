@@ -33,6 +33,7 @@ expected_cases = {
     "proof-accessor-changing": ("SUBTREE_REQUEST", "short", ["short"]),
     "proof-proxy-length-flip": ("SUBTREE_REQUEST", "empty", []),
     "proof-proxy-transparent": ("SUBTREE_REQUEST", "one", ["a"]),
+    "proof-proxy-revoked": ("SUBTREE_REQUEST", "one", ["a"]),
 }
 assert len(vectors["cases"]) == len(expected_cases)
 for case in vectors["cases"]:
@@ -49,7 +50,8 @@ for case in vectors["cases"]:
     assert wire(emitted).hex() == vectors["wires"][key]["hex"], case["id"]
 
 assert not expected_cases
-assert vectors["cases"][-2]["slotKind"] == "proxy-length-flip"
-assert vectors["cases"][-2]["length"] == 1 and vectors["cases"][-2]["entries"][0]["hash"] == "a"
-assert vectors["cases"][-1]["slotKind"] == "proxy-transparent"
-print("Proof-array bytes: 4 wires and 7 cases independently replayed")
+assert vectors["cases"][-3]["slotKind"] == "proxy-length-flip"
+assert vectors["cases"][-3]["length"] == 1 and vectors["cases"][-3]["entries"][0]["hash"] == "a"
+assert vectors["cases"][-2]["slotKind"] == "proxy-transparent"
+assert vectors["cases"][-1]["slotKind"] == "proxy-revoked"
+print("Proof-array bytes: 4 wires and 8 cases independently replayed")

@@ -25,7 +25,7 @@ function requestDecimal(value) {
   return decimal(String(value));
 }
 function checkedProof(proof) {
-  requireValue(Array.isArray(proof) && !utilTypes.isProxy(proof), 'SUBTREE_REQUEST');
+  requireValue(!utilTypes.isProxy(proof) && Array.isArray(proof), 'SUBTREE_REQUEST');
   const count = proof.length;
   requireValue(count <= 63, 'SUBTREE_REQUEST');
   const hashes = [];

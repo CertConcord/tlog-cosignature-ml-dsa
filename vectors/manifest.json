@@ -13,6 +13,6 @@
     "vectors/request-input-types.json": "2042c11103056d85bbf46321f2eadedeecdcfdb39d67fcc42021eee3447afe40",
     "vectors/transport-bounds.json": "6f41c3d4bdd0141a0a1d74be936700c9c1cee9dadc59a0cc39661640570f3660",
     "vectors/standalone-checkpoint-bound.json": "66cd2f4cc6a7855d2f9eca7a248370f2d41dd001f82b208e0f4f1242c56c2f3d",
-    "vectors/sparse-proof.json": "673581cfde341f3773599574de513f6a42e5c57095f7deee60eabd7f97ae27f4"
+    "vectors/sparse-proof.json": "597fae653aab7d28095e95f12f073d1324e53ffd42847d01d4810fa384650da9"
   }
 }

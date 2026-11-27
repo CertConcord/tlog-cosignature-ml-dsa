@@ -31,6 +31,7 @@ const vectors = {
     { id: 'proof-accessor-changing', length: 1, entries: [{ index: 0, hash: 'short' }], slotKind: 'accessor-changing', expected: 'SUBTREE_REQUEST', emittedHashes: ['short'], forbiddenWire: 'short' },
     { id: 'proof-proxy-length-flip', length: 1, entries: [{ index: 0, hash: 'a' }], slotKind: 'proxy-length-flip', expected: 'SUBTREE_REQUEST', emittedHashes: [], forbiddenWire: 'empty' },
     { id: 'proof-proxy-transparent', length: 1, entries: [{ index: 0, hash: 'a' }], slotKind: 'proxy-transparent', expected: 'SUBTREE_REQUEST', emittedHashes: ['a'], forbiddenWire: 'one' },
+    { id: 'proof-proxy-revoked', length: 1, entries: [{ index: 0, hash: 'a' }], slotKind: 'proxy-revoked', expected: 'SUBTREE_REQUEST', emittedHashes: ['a'], forbiddenWire: 'one' },
   ],
 };
 writeFileSync(join(root, 'vectors/sparse-proof.json'), JSON.stringify(vectors, null, 2) + '\n');
