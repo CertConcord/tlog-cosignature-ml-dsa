@@ -591,6 +591,21 @@
       "id": "keyobject-verify-shadowed-context-altered-origin",
       "expected": "INVALID",
       "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "proof-proxy-length-flip",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-proxy-transparent",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-proxy-revoked",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
     }
   ]
 }

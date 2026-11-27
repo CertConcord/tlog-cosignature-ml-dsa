@@ -50,6 +50,7 @@
       "length": 1,
       "entries": [],
       "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [],
       "forbiddenWire": "empty"
     },
     {
@@ -66,6 +67,10 @@
         }
       ],
       "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [
+        "a",
+        "b"
+      ],
       "forbiddenWire": "two"
     },
     {
@@ -79,7 +84,58 @@
       ],
       "slotKind": "accessor-changing",
       "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [
+        "short"
+      ],
       "forbiddenWire": "short"
+    },
+    {
+      "id": "proof-proxy-length-flip",
+      "length": 1,
+      "entries": [
+        {
+          "index": 0,
+          "hash": "a"
+        }
+      ],
+      "slotKind": "proxy-length-flip",
+      "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [],
+      "forbiddenWire": "empty"
+    },
+    {
+      "id": "proof-proxy-transparent",
+      "length": 1,
+      "entries": [
+        {
+          "index": 0,
+          "hash": "a"
+        }
+      ],
+      "slotKind": "proxy-transparent",
+      "expected": "SUBTREE_REQUEST",
+      "emittedHashes": [
+        "a"
+      ],
+      "forbiddenWire": "one"
+    },
+    {
+      "id": "proof-proxy-revoked",
+      "length": 1,
+      "entries": [
+        {
+          "index": 0,
+          "hash": "a"
+        }
+      ],
+      "slotKind": "proxy-revoked",
+      "expected": "SUBTREE_REQUEST",
+      "previousOutcome": {
+        "kind": "error",
+        "name": "TypeError",
+        "wire": null
+      },
+      "comparisonWire": "one"
     }
   ]
 }

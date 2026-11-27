@@ -22,7 +22,7 @@ for (const [name, vector] of Object.entries(vectors.wires)) {
 
 for (const item of vectors.cases) {
   test(item.id, () => {
-    const proof = new Array(item.length);
+    let proof = new Array(item.length);
     if (item.slotKind === 'accessor-changing') {
       let reads = 0;
       Object.defineProperty(proof, '0', { enumerable: true, get() {
@@ -30,6 +30,19 @@ for (const item of vectors.cases) {
       } });
     } else {
       for (const entry of item.entries) proof[entry.index] = Buffer.from(vectors.hashes[entry.hash], 'hex');
+    }
+    if (item.slotKind === 'proxy-length-flip') {
+      let reads = 0;
+      proof = new Proxy(proof, { get(target, property, receiver) {
+        if (property === 'length') return ++reads === 1 ? item.length : 0;
+        return Reflect.get(target, property, receiver);
+      } });
+    } else if (item.slotKind === 'proxy-transparent') {
+      proof = new Proxy(proof, {});
+    } else if (item.slotKind === 'proxy-revoked') {
+      const wrapped = Proxy.revocable(proof, {});
+      wrapped.revoke();
+      proof = wrapped.proxy;
     }
     const request = { ...base, proof };
     if (item.expected === 'VALID') {
@@ -39,8 +52,15 @@ for (const item of vectors.cases) {
     } else {
       assert.equal(item.expected, 'SUBTREE_REQUEST');
       const cut = sourceWire.indexOf('\n\n');
-      const discardedHoleWire = sourceWire.slice(0, cut) + item.entries.map(entry => '\n' + Buffer.from(vectors.hashes[entry.hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
-      assert.equal(Buffer.from(discardedHoleWire).toString('hex'), vectors.wires[item.forbiddenWire].hex);
+      if (item.slotKind === 'proxy-revoked') {
+        assert.deepEqual(item.previousOutcome, { kind: 'error', name: 'TypeError', wire: null });
+        assert.throws(() => Array.isArray(proof), TypeError);
+        const comparisonWire = sourceWire.slice(0, cut) + item.entries.map(entry => '\n' + Buffer.from(vectors.hashes[entry.hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
+        assert.equal(Buffer.from(comparisonWire).toString('hex'), vectors.wires[item.comparisonWire].hex);
+      } else {
+        const forbiddenWire = sourceWire.slice(0, cut) + item.emittedHashes.map(hash => '\n' + Buffer.from(vectors.hashes[hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
+        assert.equal(Buffer.from(forbiddenWire).toString('hex'), vectors.wires[item.forbiddenWire].hex);
+      }
       assert.throws(() => encodeSubtreeRequest(request), { code: item.expected });
     }
   });
