@@ -3,6 +3,9 @@ import { types as utilTypes } from 'node:util';
 
 // This module selects one editor protocol. There is no legacy wire fallback.
 export const SUBTREE_WIRE_PROFILE = 'C2SP-20261007-MLDSA87-v2';
+const typedArrayProto = Object.getPrototypeOf(Uint8Array.prototype);
+const nativeByteLength = Object.getOwnPropertyDescriptor(typedArrayProto, 'byteLength').get;
+const nativeSet = Uint8Array.prototype.set;
 const requireValue = (condition, code) => {
   if (!condition) { const error = new Error(code); error.code = code; throw error; }
 };
@@ -31,8 +34,10 @@ function checkedProof(proof) {
   const hashes = [];
   for (let i = 0; i < count; i++) {
     const slot = Object.getOwnPropertyDescriptor(proof, i);
-    requireValue(slot && Object.hasOwn(slot, 'value') && Buffer.isBuffer(slot.value) && slot.value.length === 32, 'SUBTREE_REQUEST');
-    hashes.push(Buffer.from(slot.value));
+    requireValue(slot && Object.hasOwn(slot, 'value') && !utilTypes.isProxy(slot.value) && Buffer.isBuffer(slot.value) && Reflect.apply(nativeByteLength, slot.value, []) === 32, 'SUBTREE_REQUEST');
+    const hash = Buffer.alloc(32);
+    Reflect.apply(nativeSet, hash, [slot.value]);
+    hashes.push(hash);
   }
   return hashes;
 }

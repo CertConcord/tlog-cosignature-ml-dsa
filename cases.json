@@ -606,6 +606,46 @@
       "id": "proof-proxy-revoked",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-buffer-plain",
+      "expected": "VALID",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-shadow-length-16",
+      "expected": "VALID",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-native-short-spoof",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-native-long-spoof",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-proxy",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-revoked-proxy",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
     }
   ]
 }
