@@ -14,7 +14,7 @@ const hintFromSpki=(name,spki) => createHash('sha256').update(Buffer.concat([
   Buffer.from('certconcord/tlog-ml-dsa-87/v1\n'),Buffer.from(name+'\n'),spki,
 ])).digest().subarray(0,4);
 const publicKeyFacts=(key,code) => {
-  requireValue(key instanceof KeyObject&&!utilTypes.isProxy(key),code);
+  requireValue(!utilTypes.isProxy(key)&&key instanceof KeyObject,code);
   requireValue(Reflect.apply(keyRoleGetter,key,[])==='public',code);
   requireValue(Object.getPrototypeOf(key)===nativePublicPrototype,code);
   const isolated=structuredClone(key);
@@ -32,7 +32,7 @@ const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'
 const text = s => {requireValue(typeof s==='string'&&/^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(s),'SUBTREE_NAME');const b=Buffer.from(s);return Buffer.concat([Buffer.from([b.length]),b]);};
 export function mlDsa87KeyID(name,key) {
   text(name);
-  if(key instanceof KeyObject)requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
+  requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
   const publicKey=key instanceof KeyObject&&Reflect.apply(keyRoleGetter,key,[])==='public'?key:createPublicKey(key instanceof KeyObject?structuredClone(key):key);
   const facts=publicKeyFacts(publicKey,'NOTE_KEY_SCHEME');
   requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
@@ -97,7 +97,7 @@ export function subtreeInput({name,origin,start=0n,end,root,timestamp=0}) {
   return Buffer.concat([Buffer.from('subtree/v1\n\0'),text(name),u64(timestamp),text(origin),u64(start),u64(end),nativeRoot]);
 }
 export function verifyCosignature(context,signature,key) {
-  if(key instanceof KeyObject)requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
+  requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
   const publicKey=key instanceof KeyObject&&Reflect.apply(keyRoleGetter,key,[])==='private'?createPublicKey(structuredClone(key)):key;
   const facts=publicKeyFacts(publicKey,'NOTE_KEY_SCHEME');
   requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
