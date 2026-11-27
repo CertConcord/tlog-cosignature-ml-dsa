@@ -35,8 +35,11 @@ Run with Node.js 24.15 or later:
     python3 tools/verify-subtree-cross-runtime-vectors.py
     python3 tools/verify-subtree-cross-runtime-checkpoint-vectors.py
     python3 tools/verify-subtree-python-http-vectors.py
+    python3 tools/verify-subtree-boundary-matrix-vectors.py
 
-The last three verifiers use the test-only `pqcrypto` 1.0.0 package. Install it in a virtual environment with the wheel hashes in `tools/requirements-cross-runtime.txt` before running them. The final verifier starts a loopback Python witness peer and invokes the Node HTTP client for 25 cases. Seven cases compose admitted-key discovery with a fixed Python-signed checkpoint request: two send the exact request and five reject before any POST, including an ML-DSA-44-only registry. CI uses a separate virtual environment for these checks.
+The last four verifiers use the test-only `pqcrypto` 1.0.0 package. Install it in a virtual environment with the wheel hashes in `tools/requirements-cross-runtime.txt` before running them. The Python HTTP verifier starts a loopback witness peer and invokes the Node HTTP client for 25 cases. Seven cases compose admitted-key discovery with a fixed Python-signed checkpoint request: two send the exact request and five reject before any POST, including an ML-DSA-44-only registry. CI uses a separate virtual environment for these checks.
+
+The boundary-matrix verifier also uses that test-only package. It checks a frozen 257-leaf ML-DSA-87 checkpoint and six complete positive and six changed-byte negative request wires. The Node suite checks every aligned interval in 24 synthetic tree sizes on both sides of power-of-two boundaries, with one changed-byte rejection per interval. These are verification fixtures, not a deployed witness or a new C2SP type assignment.
 
 Original text is licensed under [CC BY 4.0](LICENSES/CC-BY-4.0.txt), software under [Apache-2.0](LICENSE), and original synthetic vectors under [CC0](LICENSES/CC0-1.0.txt). Upstream material is referenced under its own terms. See [NOTICE](NOTICE) and [contributions](CONTRIBUTING.md).
 

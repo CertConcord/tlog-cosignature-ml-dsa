@@ -1466,6 +1466,66 @@
       "id": "python-http-discovery-other-name",
       "expected": "NOTE_KEY_UNKNOWN",
       "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "boundary-n257-full",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-left-256",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-right-leaf",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-prefix-129",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-middle-128",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-empty-right",
+      "expected": "VALID",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-full-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-left-256-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-right-leaf-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-prefix-129-short-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-middle-128-extra-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "boundary-n257-empty-right-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-boundary-matrix.json"
     }
   ]
 }
