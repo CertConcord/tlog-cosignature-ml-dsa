@@ -1626,6 +1626,26 @@
       "id": "large-u64-http-raw-bad-proof",
       "expected": "HTTP_422",
       "vector": "vectors/subtree-large-u64-http.json"
+    },
+    {
+      "id": "proof-limit-9223372036854775808",
+      "expected": "VALID",
+      "vector": "vectors/subtree-proof-limit.json"
+    },
+    {
+      "id": "proof-limit-9223372036854775808-bad-proof-byte",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-proof-limit.json"
+    },
+    {
+      "id": "proof-limit-9223372036854775809",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/subtree-proof-limit.json"
+    },
+    {
+      "id": "proof-limit-18446744073709551615",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/subtree-proof-limit.json"
     }
   ]
 }
