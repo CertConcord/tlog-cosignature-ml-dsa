@@ -1391,6 +1391,46 @@
       "id": "python-http-redirect-302",
       "expected": "SUBTREE_HTTP_STATUS",
       "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-range-n14-range0-3",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-n14-range4-8",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-n14-range13-14",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-n14-range0-14",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-n14-range5-5",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-nonempty-missing-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-empty-wrong-hash",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-range-empty-surplus-proof",
+      "expected": "HTTP_422",
+      "vector": "vectors/subtree-python-http-ranges.json"
     }
   ]
 }
