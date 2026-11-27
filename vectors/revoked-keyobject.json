@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "sourceSpkiVector": "vectors/key-discovery.json",
+  "sourceSignatureVector": "vectors/prefix.json",
+  "sourceNameUtf8Hex": "7769746e6573732e6578616d706c65",
+  "sourceSpkiBytes": 2614,
+  "sourceSpkiSha256": "cd77e63cef6f3fd17f7a81494e15a3b670a8c1286e76a576fd9c8e5f4f6f7a38",
+  "sourceHintHex": "0cfc3c6d",
+  "sourceInputBytes": 103,
+  "sourceInputSha256": "b79371f1aa622608224519357583c3c2f10cc7944dc723564a729123bee3bd97",
+  "sourceSignatureBytes": 4627,
+  "sourceSignatureSha256": "d973d74eb59ae2a319503a9a40cc47e82191f21c77c468696c7b8803af04d2f9",
+  "cases": [
+    { "id": "keyobject-hint-ordinary", "operation": "hint", "shape": "ordinary", "expected": "VALID" },
+    { "id": "keyobject-select-ordinary", "operation": "select", "shape": "ordinary", "expected": "VALID" },
+    { "id": "keyobject-verify-ordinary", "operation": "verify", "shape": "ordinary", "expected": "VALID" },
+    { "id": "keyobject-hint-revoked", "operation": "hint", "shape": "revoked-proxy", "expected": "NOTE_KEY_SCHEME" },
+    { "id": "keyobject-select-revoked", "operation": "select", "shape": "revoked-proxy", "expected": "NOTE_KEY_CANDIDATES" },
+    { "id": "keyobject-verify-revoked", "operation": "verify", "shape": "revoked-proxy", "expected": "NOTE_KEY_SCHEME" }
+  ]
+}

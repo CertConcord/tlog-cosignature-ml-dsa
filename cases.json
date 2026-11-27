@@ -951,6 +951,36 @@
       "id": "checkpoint-getter-many-then-one",
       "expected": "SUBTREE_ONE_WITNESS",
       "vector": "vectors/checkpoint-accessor.json"
+    },
+    {
+      "id": "keyobject-hint-ordinary",
+      "expected": "VALID",
+      "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "keyobject-select-ordinary",
+      "expected": "VALID",
+      "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "keyobject-verify-ordinary",
+      "expected": "VALID",
+      "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "keyobject-hint-revoked",
+      "expected": "NOTE_KEY_SCHEME",
+      "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "keyobject-select-revoked",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "keyobject-verify-revoked",
+      "expected": "NOTE_KEY_SCHEME",
+      "vector": "vectors/revoked-keyobject.json"
     }
   ]
 }

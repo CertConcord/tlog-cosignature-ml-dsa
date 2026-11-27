@@ -21,6 +21,7 @@
     "vectors/key-hint-buffer.json": "e6a4474b5861f4cc4778b262d100481c04183251a2cbdf05eb101842f2df16c4",
     "vectors/signature-verify-buffer.json": "9222eb27e480cd44e346c35cbce9cd814d42e61648ba4cc2560268e6db0233bf",
     "vectors/log-key-id-buffer.json": "fc626623525deb7bf611f5ebfa9eca3f918a7c14c6e0a1ea3dcdfe00310be2da",
-    "vectors/checkpoint-accessor.json": "6a6f2c584f3f50aadb09e80214f99477529b7bdf044030d9d6570be1fd8d5c32"
+    "vectors/checkpoint-accessor.json": "6a6f2c584f3f50aadb09e80214f99477529b7bdf044030d9d6570be1fd8d5c32",
+    "vectors/revoked-keyobject.json": "b7303530fe8679f754061cb62ce727a19319fb00072e56272bc55f9f4dbd76c4"
   }
 }
