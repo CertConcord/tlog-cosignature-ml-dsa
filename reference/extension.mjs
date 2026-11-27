@@ -1,5 +1,8 @@
 import {createHash,createPublicKey,generateKeyPairSync,KeyObject,verify} from 'node:crypto';
 import {types as utilTypes} from 'node:util';
+const typedArrayProto=Object.getPrototypeOf(Uint8Array.prototype);
+const nativeByteLength=Object.getOwnPropertyDescriptor(typedArrayProto,'byteLength').get;
+const nativeSet=Uint8Array.prototype.set;
 const requireValue = (condition,code) => {if(!condition){const e=new Error(code);e.code=code;throw e;}};
 const keyRoleGetter=Object.getOwnPropertyDescriptor(KeyObject.prototype,'type').get;
 const {publicKey:prototypeKey}=generateKeyPairSync('ed25519');
@@ -39,9 +42,10 @@ export function mlDsa87KeyID(name,key) {
 // A four-byte hint cannot establish trust or resolve a collision by itself.
 export function selectMlDsa87Key(name,keyHint,candidates) {
   text(name);
-  requireValue(Buffer.isBuffer(keyHint)&&keyHint.length===4,'NOTE_KEY_ID');
+  requireValue(!utilTypes.isProxy(keyHint)&&Buffer.isBuffer(keyHint)&&utilTypes.isUint8Array(keyHint)&&Reflect.apply(nativeByteLength,keyHint,[])===4,'NOTE_KEY_ID');
   requireValue(Array.isArray(candidates)&&!utilTypes.isProxy(candidates),'NOTE_KEY_CANDIDATES');
-  const admittedHint=Buffer.from(keyHint);
+  const admittedHint=Buffer.alloc(4);
+  Reflect.apply(nativeSet,admittedHint,[keyHint]);
   const count=candidates.length;
   requireValue(count<=64,'NOTE_KEY_CANDIDATES');
   const entries=[];
@@ -87,8 +91,10 @@ export function subtreeInput({name,origin,start=0n,end,root,timestamp=0}) {
   start=exactInteger(start);end=exactInteger(end);timestamp=exactInteger(timestamp);
   requireValue(start>=0n&&end>=start&&end<=0xffffffffffffffffn&&(!timestamp||start===0n),'SUBTREE_CONTEXT');
   let width=1n;while(width<end-start)width<<=1n;
-  requireValue(start%width===0n&&Buffer.isBuffer(root)&&root.length===32,'SUBTREE_CONTEXT');
-  return Buffer.concat([Buffer.from('subtree/v1\n\0'),text(name),u64(timestamp),text(origin),u64(start),u64(end),root]);
+  requireValue(start%width===0n&&!utilTypes.isProxy(root)&&Buffer.isBuffer(root)&&utilTypes.isUint8Array(root)&&Reflect.apply(nativeByteLength,root,[])===32,'SUBTREE_CONTEXT');
+  const nativeRoot=Buffer.alloc(32);
+  Reflect.apply(nativeSet,nativeRoot,[root]);
+  return Buffer.concat([Buffer.from('subtree/v1\n\0'),text(name),u64(timestamp),text(origin),u64(start),u64(end),nativeRoot]);
 }
 export function verifyCosignature(context,signature,key) {
   if(key instanceof KeyObject)requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');

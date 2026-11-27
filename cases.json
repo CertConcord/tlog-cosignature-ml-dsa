@@ -751,6 +751,96 @@
       "id": "response-buffer-revoked-proxy",
       "expected": "SUBTREE_SIGNATURE_LENGTH",
       "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "context-root-plain",
+      "expected": "VALID",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-shadow-length-16",
+      "expected": "VALID",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-native-short-spoof",
+      "expected": "SUBTREE_CONTEXT",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-native-long-spoof",
+      "expected": "SUBTREE_CONTEXT",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-uint16-buffer-prototype",
+      "expected": "SUBTREE_CONTEXT",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-proxy",
+      "expected": "SUBTREE_CONTEXT",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "context-root-revoked-proxy",
+      "expected": "SUBTREE_CONTEXT",
+      "vector": "vectors/context-root.json"
+    },
+    {
+      "id": "key-hint-buffer-plain",
+      "expected": "VALID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-shadow-length-2",
+      "expected": "VALID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-native-short-spoof",
+      "expected": "NOTE_KEY_ID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-native-long-spoof",
+      "expected": "NOTE_KEY_ID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-uint16-buffer-prototype",
+      "expected": "NOTE_KEY_ID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-proxy",
+      "expected": "NOTE_KEY_ID",
+      "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "key-hint-buffer-revoked-proxy",
+      "expected": "NOTE_KEY_ID",
+      "vector": "vectors/key-hint-buffer.json"
     }
   ]
 }

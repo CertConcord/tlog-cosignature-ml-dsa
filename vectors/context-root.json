@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "sourceCase": "vectors/prefix.json#input",
+  "context": {
+    "name": "witness.example",
+    "origin": "issuer.example/log",
+    "start": 0,
+    "end": 4,
+    "timestamp": 100
+  },
+  "roots": {
+    "original": "dde85f5c03b0d18a259bf8bba4f6182bad23c9ed4cc7ed4b261bd995ea556cd5",
+    "short": "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+    "long": "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a"
+  },
+  "preimages": {
+    "valid": {
+      "hex": "737562747265652f76310a000f7769746e6573732e6578616d706c650000000000000064126973737565722e6578616d706c652f6c6f6700000000000000000000000000000004dde85f5c03b0d18a259bf8bba4f6182bad23c9ed4cc7ed4b261bd995ea556cd5",
+      "sha256": "b79371f1aa622608224519357583c3c2f10cc7944dc723564a729123bee3bd97"
+    },
+    "priorShort": {
+      "hex": "737562747265652f76310a000f7769746e6573732e6578616d706c650000000000000064126973737565722e6578616d706c652f6c6f67000000000000000000000000000000045a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+      "sha256": "2726d4e20e60e5abaad98b2708240a779af852c42c87f2c03b13d6e16336e510"
+    }
+  },
+  "cases": [
+    {
+      "id": "context-root-plain",
+      "root": "original",
+      "decoration": "none",
+      "expected": "VALID",
+      "preimage": "valid"
+    },
+    {
+      "id": "context-root-shadow-length-16",
+      "root": "original",
+      "decoration": "length-16",
+      "expected": "VALID",
+      "preimage": "valid"
+    },
+    {
+      "id": "context-root-shadow-length-throws",
+      "root": "original",
+      "decoration": "length-throws",
+      "expected": "VALID",
+      "preimage": "valid"
+    },
+    {
+      "id": "context-root-shadow-byte-length-throws",
+      "root": "original",
+      "decoration": "byte-length-throws",
+      "expected": "VALID",
+      "preimage": "valid"
+    },
+    {
+      "id": "context-root-native-short-spoof",
+      "root": "short",
+      "decoration": "length-32",
+      "expected": "SUBTREE_CONTEXT",
+      "noPreimage": true,
+      "priorPreimage": "priorShort"
+    },
+    {
+      "id": "context-root-native-long-spoof",
+      "root": "long",
+      "decoration": "length-32",
+      "expected": "SUBTREE_CONTEXT",
+      "noPreimage": true
+    },
+    {
+      "id": "context-root-uint16-buffer-prototype",
+      "root": "original",
+      "decoration": "uint16-buffer-prototype",
+      "expected": "SUBTREE_CONTEXT",
+      "noPreimage": true
+    },
+    {
+      "id": "context-root-proxy",
+      "root": "original",
+      "decoration": "proxy",
+      "expected": "SUBTREE_CONTEXT",
+      "noPreimage": true
+    },
+    {
+      "id": "context-root-revoked-proxy",
+      "root": "original",
+      "decoration": "revoked-proxy",
+      "expected": "SUBTREE_CONTEXT",
+      "noPreimage": true
+    }
+  ]
+}
