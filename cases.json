@@ -1646,6 +1646,26 @@
       "id": "proof-limit-18446744073709551615",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/subtree-proof-limit.json"
+    },
+    {
+      "id": "max-carriage-valid",
+      "expected": "VALID",
+      "vector": "vectors/subtree-max-carriage.json"
+    },
+    {
+      "id": "max-carriage-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-max-carriage.json"
+    },
+    {
+      "id": "max-carriage-leading-zero",
+      "expected": "SUBTREE_RANGE",
+      "vector": "vectors/subtree-max-carriage.json"
+    },
+    {
+      "id": "max-carriage-extra-proof",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/subtree-max-carriage.json"
     }
   ]
 }
