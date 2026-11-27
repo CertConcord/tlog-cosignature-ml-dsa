@@ -891,6 +891,56 @@
       "id": "verify-signature-revoked-proxy",
       "expected": "VERIFY_FALSE",
       "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "log-key-id-plain",
+      "expected": "VALID",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-shadow-length-2",
+      "expected": "VALID",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-native-short-spoof",
+      "expected": "CHECKPOINT_LOG_KEY",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-native-long-spoof",
+      "expected": "CHECKPOINT_LOG_KEY",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-uint16-buffer-prototype",
+      "expected": "CHECKPOINT_LOG_KEY",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-proxy",
+      "expected": "CHECKPOINT_LOG_KEY",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-revoked-proxy",
+      "expected": "CHECKPOINT_LOG_KEY",
+      "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "log-key-id-wrong-four-bytes",
+      "expected": "CHECKPOINT_LOG_SIGNATURE_REQUIRED",
+      "vector": "vectors/log-key-id-buffer.json"
     }
   ]
 }
