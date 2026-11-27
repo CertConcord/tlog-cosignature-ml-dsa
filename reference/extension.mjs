@@ -35,17 +35,23 @@ export function selectMlDsa87Key(name,keyHint,candidates) {
     const nameField=Object.getOwnPropertyDescriptor(candidate,'name');
     const keyField=Object.getOwnPropertyDescriptor(candidate,'publicKey');
     requireValue(nameField&&keyField,'NOTE_KEY_CANDIDATES');
-    if(!Object.hasOwn(nameField,'value')||!Object.hasOwn(keyField,'value'))accessorRecords++;
-    records.push({candidate,nameField,keyField});
+    const accessor=!Object.hasOwn(nameField,'value')||!Object.hasOwn(keyField,'value');
+    if(accessor)accessorRecords++;
+    records.push({candidate,nameField,keyField,accessor});
   }
   requireValue(accessorRecords<=1,'NOTE_KEY_CANDIDATES');
-  const fieldValue=(candidate,field) => Object.hasOwn(field,'value')?field.value:field.get?.call(candidate);
+  const fieldValue=(candidate,field) => {
+    if(Object.hasOwn(field,'value'))return field.value;
+    return field.get===undefined?undefined:Reflect.apply(field.get,candidate,[]);
+  };
   let selected;
-  for(const {candidate,nameField,keyField} of records) {
+  for(const {candidate,nameField,keyField,accessor} of records) {
     const candidateName=fieldValue(candidate,nameField);
     requireValue(typeof candidateName==='string','NOTE_KEY_CANDIDATES');
     if(candidateName!==name)continue;
-    const publicKey=fieldValue(candidate,keyField);
+    const currentKeyField=accessor?Object.getOwnPropertyDescriptor(candidate,'publicKey'):keyField;
+    requireValue(currentKeyField,'NOTE_KEY_CANDIDATES');
+    const publicKey=fieldValue(candidate,currentKeyField);
     requireValue(publicKey instanceof KeyObject&&publicKey.type==='public','NOTE_KEY_CANDIDATES');
     if(publicKey.asymmetricKeyType!=='ml-dsa-87')continue;
     if(!mlDsa87KeyID(name,publicKey).equals(admittedHint))continue;

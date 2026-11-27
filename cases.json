@@ -473,6 +473,26 @@
       "vector": "vectors/candidate-record.json"
     },
     {
+      "id": "candidate-record-own-key-to-ml-dsa-44",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-own-key-to-primary",
+      "expected": "VALID",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-shadowed-getter-call",
+      "expected": "VALID",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-absent-getter",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
       "id": "candidate-record-two-accessors",
       "expected": "NOTE_KEY_CANDIDATES",
       "vector": "vectors/candidate-record.json"

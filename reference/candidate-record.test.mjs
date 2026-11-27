@@ -24,13 +24,15 @@ test('candidate record vector fixes exact name, hint, ML-DSA-87 and ML-DSA-44 SP
 for (const item of vector.cases) test('candidate record: ' + item.id, () => {
   const registry = item.initial.map(entry => ({ name: names[entry.name], publicKey: keys[entry.key] }));
   const hint = Buffer.from(vector.keyHintHex, 'hex');
-  let nameReads = 0, keyReads = 0;
+  let nameReads = 0, keyReads = 0, nameReceiver = false, keyReceiver = false;
   if (item.mutation) {
     Object.defineProperty(registry[0], 'name', { get() {
       nameReads++;
       if (item.mutation === 'rewrite-second-name') registry[1].name = names.other;
       else if (item.mutation === 'replace-second-key') registry[1].publicKey = keys.second;
       else if (item.mutation === 'zero-hint') hint.fill(0);
+      else if (item.mutation === 'replace-own-key-with-legacy44') registry[0].publicKey = keys.legacy44;
+      else if (item.mutation === 'replace-own-key-with-primary') registry[0].publicKey = keys.primary;
       return names.requested;
     } });
   }
@@ -40,6 +42,15 @@ for (const item of vector.cases) test('candidate record: ' + item.id, () => {
       Object.defineProperty(registry[i], 'name', { get() { nameReads++; return names.requested; } });
       Object.defineProperty(registry[i], 'publicKey', { get() { keyReads++; return keys.primary; } });
     }
+  } else if (item.shape === 'shadowed-call') {
+    function getName() { nameReads++; nameReceiver = this === registry[0]; return names[item.nameGetterResult]; }
+    function getKey() { keyReads++; keyReceiver = this === registry[0]; return keys[item.keyGetterResult]; }
+    getName.call = () => names[item.shadowedCallNameResult];
+    getKey.call = () => keys[item.shadowedCallKeyResult];
+    Object.defineProperty(registry[0], 'name', { get: getName });
+    Object.defineProperty(registry[0], 'publicKey', { get: getKey });
+  } else if (item.shape === 'absent-getter') {
+    Object.defineProperty(registry[0], 'name', { get: undefined });
   } else if (item.shape === 'inherited-name') {
     delete registry[0].name;
     Object.setPrototypeOf(registry[0], { name: names.requested });
@@ -51,5 +62,6 @@ for (const item of vector.cases) test('candidate record: ' + item.id, () => {
   else assert.throws(select, { code: item.expected });
   if (item.shape === 'two-accessors') assert.equal(nameReads, 0);
   if (item.shape === 'single-accessor') { assert.equal(nameReads, 1); assert.equal(keyReads, 1); }
+  if (item.shape === 'shadowed-call') { assert.equal(nameReads, 1); assert.equal(keyReads, 1); assert(nameReceiver); assert(keyReceiver); }
   if (item.mutation) assert.equal(nameReads, 1);
 });

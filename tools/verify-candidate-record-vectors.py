@@ -54,8 +54,17 @@ for case in vector["cases"]:
     assert 1 <= len(initial) <= 64
     shape = case["shape"]
     mutation = case.get("mutation")
-    expected = select(initial, bytes.fromhex(vector["keyHintHex"]))
-    if shape in {"two-accessors", "inherited-name", "proxy"}:
+    admitted = [dict(item) for item in initial]
+    if mutation == "replace-own-key-with-legacy44":
+        admitted[0]["key"] = "legacy44"
+    elif mutation == "replace-own-key-with-primary":
+        admitted[0]["key"] = "primary"
+    expected = select(admitted, bytes.fromhex(vector["keyHintHex"]))
+    if shape == "shadowed-call":
+        expected = select([{"name": case["nameGetterResult"], "key": case["keyGetterResult"]}], bytes.fromhex(vector["keyHintHex"]))
+        assert names[case["shadowedCallNameResult"]] != names[case["nameGetterResult"]]
+        assert keys[case["shadowedCallKeyResult"]] != keys[case["keyGetterResult"]]
+    elif shape in {"two-accessors", "inherited-name", "proxy", "absent-getter"}:
         expected = "NOTE_KEY_CANDIDATES"
     else:
         assert shape in {"data", "single-accessor"}
@@ -69,8 +78,17 @@ for case in vector["cases"]:
         prior_items[1]["key"] = "second"
     elif mutation == "zero-hint":
         prior_hint = bytes(4)
+    elif mutation == "replace-own-key-with-legacy44":
+        prior_items[0]["key"] = "legacy44"
+    elif mutation == "replace-own-key-with-primary":
+        prior_items[0]["key"] = "primary"
     else:
         assert mutation is None, case["id"]
-    assert case["previousResult"] == select(prior_items, prior_hint), case["id"]
+    previous = select(prior_items, prior_hint)
+    if shape == "shadowed-call":
+        previous = select([{"name": case["shadowedCallNameResult"], "key": case["shadowedCallKeyResult"]}], prior_hint)
+    elif shape == "absent-getter":
+        previous = "NOTE_KEY_CANDIDATES"
+    assert case["previousResult"] == previous, case["id"]
 
 print(f"independent candidate-record byte replay: {len(vector['cases'])} cases passed")
