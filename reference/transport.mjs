@@ -78,8 +78,10 @@ export function parseCheckpointEnvelope(note) {
 // cryptographically with their externally admitted log key before accepting it.
 export function assertCheckpointLogSignature(checkpoint, { name, keyID }) {
   const cp = parseCheckpointEnvelope(checkpoint);
-  requireValue(nameOK(name) && Buffer.isBuffer(keyID) && keyID.length === 4, 'CHECKPOINT_LOG_KEY');
-  requireValue(cp.signatures.some(signature => signature.name === name && same(signature.keyID, keyID)), 'CHECKPOINT_LOG_SIGNATURE_REQUIRED');
+  requireValue(nameOK(name) && !utilTypes.isProxy(keyID) && Buffer.isBuffer(keyID) && utilTypes.isUint8Array(keyID) && Reflect.apply(nativeByteLength, keyID, []) === 4, 'CHECKPOINT_LOG_KEY');
+  const admittedID = Buffer.alloc(4);
+  Reflect.apply(nativeSet, admittedID, [keyID]);
+  requireValue(cp.signatures.some(signature => signature.name === name && same(signature.keyID, admittedID)), 'CHECKPOINT_LOG_SIGNATURE_REQUIRED');
   return cp;
 }
 
