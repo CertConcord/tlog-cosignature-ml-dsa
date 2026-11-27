@@ -3,7 +3,7 @@
   "sha256": {
     "vectors/prefix.json": "0b54e1010a0a8d1ef47e92140111f97c94c5f6829003688704dee2d2847547bb",
     "vectors/transport.json": "cfb88d8554f5da27a9433bb363204940d8eab16f4769f1acf42b71cb013951f4",
-    "vectors/key-discovery.json": "592e4d7edc4b6bd311d8dce08d55e7aa7050cf8df1bff18381edc7a57d8ce7d8",
+    "vectors/key-discovery.json": "a9291673164738204b6ec0a515a1f4f61aab5e280dd2254e743f9beba6d2612b",
     "vectors/key-candidate-accessors.json": "3e0418d24fd44b09772f8a95d0caa6fb425d9f3d73b1b6ce824c23af81c21174",
     "vectors/candidate-array.json": "e768ff6625097b64ddb866500c701263a79797f3b9ad713bf63b2d0c2c517942",
     "vectors/candidate-record.json": "27ce3ead1d45e4837c54bee1a94d1f6b582387ec15ef5edffb9b680b532aa4c8",
@@ -30,14 +30,15 @@
     "vectors/subtree-http-interop.json": "ad66f2b07ae2604b50ae1cc884a17a30734bad292575abd5818c1980cfb56606",
     "vectors/subtree-live-sign.json": "96a075a91f931f578693432e4853f7c4462ec9be08b408dcb4ae81cff439c152",
     "vectors/subtree-cross-runtime.json": "f88171c1de5e3ed169f19327fb75543d04aa414f82c1a66587ba115489c8afd3",
-    "vectors/subtree-cross-runtime-checkpoint.json": "d10c8d638c267ec01219a6265240126bef9d3bce86feeb4fb92dcf52596739f1",
-    "vectors/subtree-python-http-interop.json": "96af66b2a7913a69f521305967ffdfa40e710b9cf7491f57b7cb787a93be7629",
-    "vectors/subtree-python-http-ranges.json": "4589a58b4d5587a8d8d0d1d373082cee69059bcaa6f5e7bcd31f58745c049fff",
-    "vectors/subtree-python-http-discovery.json": "b8d9eb2a6dbd91e881304c765213c6148f83ce77bfdff281e58e21ceea89cc0e",
+    "vectors/subtree-cross-runtime-checkpoint.json": "44dce09b6b11e8385aab3d2e29346fcbb7989f392397993988e8926542982a51",
+    "vectors/subtree-python-http-interop.json": "81c0efc9cf8c9c07695a602a8ca252b359a9c4175a98a06223f583f384203a80",
+    "vectors/subtree-python-http-ranges.json": "45e59a07fc8606f7d79ce8ac72cbb0d0b8c3e866fd46d03cf5cd6bb2cdacd69a",
+    "vectors/subtree-python-http-discovery.json": "c12fa3aad28f6e69fa907dc60aafb2843f315bcdafe81abcac95501929ef0fdc",
     "vectors/subtree-boundary-matrix.json": "a788c9672a748e4340c7a9de7f0ffff73da08f43f3a9b61caa8328216e1dcd3d",
     "vectors/subtree-large-u64.json": "c2a204ffc75921207098f4034562a2954faf63ed122d9452ec1d51e31efa7a3d",
     "vectors/subtree-large-u64-http.json": "4f95d7a8fe21c72203b996543985c27718fcd6c538ce92c5f393acb928fe2d69",
     "vectors/subtree-proof-limit.json": "e46f3c996b2b11d4442376a4db85eae0f3bdaf3af610230279489ac0ba174664",
-    "vectors/subtree-max-carriage.json": "d04e90661c615aa732b88b9aef524fb7f7cc95705b22d34fbbcf4ebceafc3d1b"
+    "vectors/subtree-max-carriage.json": "d04e90661c615aa732b88b9aef524fb7f7cc95705b22d34fbbcf4ebceafc3d1b",
+    "vectors/utf8-names.json": "a9aae76249391292302d76235249964264822c3b93c3e2b94f59ceeac7bc1433"
   }
 }

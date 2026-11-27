@@ -159,7 +159,7 @@
     },
     {
       "id": "key-discovery-selected-utf8-name",
-      "expected": "SUBTREE_NAME",
+      "expected": "NOTE_KEY_UNKNOWN",
       "vector": "vectors/key-discovery.json"
     },
     {
@@ -1666,6 +1666,46 @@
       "id": "max-carriage-extra-proof",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/subtree-max-carriage.json"
+    },
+    {
+      "id": "utf8-name-valid",
+      "expected": "VALID",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-boundary-valid",
+      "expected": "VALID",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-wrong-origin",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-nfd",
+      "expected": "SUBTREE_WITNESS_KEY",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-space",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-plus",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-wrong-hint",
+      "expected": "SUBTREE_WITNESS_KEY",
+      "vector": "vectors/utf8-names.json"
+    },
+    {
+      "id": "utf8-name-overlong",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/utf8-names.json"
     }
   ]
 }

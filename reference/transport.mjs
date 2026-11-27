@@ -1,4 +1,5 @@
 import { mlDsa87KeyID, subtreeInput, verifyCosignature } from './extension.mjs';
+import { c2spNameBytes } from './name.mjs';
 import { createHash } from 'node:crypto';
 import { types as utilTypes } from 'node:util';
 
@@ -11,7 +12,7 @@ const requireValue = (condition, code) => {
   if (!condition) { const error = new Error(code); error.code = code; throw error; }
 };
 const same = (a, b) => Buffer.isBuffer(a) && Buffer.isBuffer(b) && a.equals(b);
-const nameOK = value => typeof value === 'string' && /^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(value);
+const nameOK = value => c2spNameBytes(value) !== null;
 function unbase64(text) {
   requireValue(typeof text === 'string' && /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(text), 'SUBTREE_BASE64');
   const value = Buffer.from(text, 'base64');
@@ -97,8 +98,8 @@ function parseCheckpoint(note, oneSignature) {
   const signatureLines = note.slice(cut + 2, -1);
   if (oneSignature) requireValue(!signatureLines.includes('\n'), 'SUBTREE_ONE_WITNESS');
   const signatures = signatureLines.split('\n').map(line => {
-    const match = /^— ([\x21-\x2a\x2c-\x7e]{1,255}) ([A-Za-z0-9+/=]+)$/.exec(line);
-    requireValue(match, 'CHECKPOINT_SIGNATURE');
+    const match = /^— (.+) ([A-Za-z0-9+/=]+)$/u.exec(line);
+    requireValue(match && nameOK(match[1]), 'CHECKPOINT_SIGNATURE');
     const bytes = unbase64(match[2]);
     requireValue(bytes.length > 4, 'CHECKPOINT_SIGNATURE');
     const keyID = bytes.subarray(0, 4), id = match[1] + ':' + keyID.toString('hex');

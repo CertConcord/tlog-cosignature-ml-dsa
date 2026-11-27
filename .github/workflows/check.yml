@@ -42,3 +42,4 @@ jobs:
       - run: .venv-cross/bin/python tools/verify-subtree-large-u64-http-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-proof-limit-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-max-carriage-vectors.py
+      - run: .venv-cross/bin/python tools/verify-utf8-name-vectors.py

@@ -27,7 +27,7 @@ const vector = {
     { id: 'key-discovery-duplicate-hint', candidates: [{ name, key: 'primary' }, { name, key: 'primary' }], expected: 'NOTE_KEY_AMBIGUOUS' },
     { id: 'key-discovery-ml-dsa-44-only', candidates: [{ name, key: 'legacy44' }], expected: 'NOTE_KEY_UNKNOWN' },
     { id: 'key-discovery-unrelated-utf8-name', candidates: [{ name: 'é.example', key: 'legacy44' }, { name: 'witness.π', key: 'second' }, { name, key: 'primary' }], expected: 'primary' },
-    { id: 'key-discovery-selected-utf8-name', name: 'witness.π', candidates: [{ name: 'witness.π', key: 'second' }], expected: 'SUBTREE_NAME' },
+    { id: 'key-discovery-selected-utf8-name', name: 'witness.π', candidates: [{ name: 'witness.π', key: 'second' }], expected: 'NOTE_KEY_UNKNOWN' },
     { id: 'key-discovery-short-hint', keyHint: prefix.keyHint.slice(0, 6), candidates: [{ name, key: 'primary' }], expected: 'NOTE_KEY_ID' },
   ],
 };

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "profile": "C2SP-20261007-MLDSA87-v2",
   "sourceConsistencyVectorSha256": "d44e6d818c1955634bc5d69ffb7119bed3333fdb1ff3155903305f0ba0292abf",
-  "sourceCheckpointVectorSha256": "d10c8d638c267ec01219a6265240126bef9d3bce86feeb4fb92dcf52596739f1",
+  "sourceCheckpointVectorSha256": "44dce09b6b11e8385aab3d2e29346fcbb7989f392397993988e8926542982a51",
   "keyHintHex": "102eee2f",
   "checkpointNoteSha256": "4a731926d67c1d71ec318755a1cf868f2b367e98e948d569f3ade2f5d3065e43",
   "cases": [

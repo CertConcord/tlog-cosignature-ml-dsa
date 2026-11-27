@@ -3,8 +3,8 @@
   "profile": "C2SP-20261007-MLDSA87-v2",
   "discoveryProfile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
   "sourceLiveVectorSha256": "96a075a91f931f578693432e4853f7c4462ec9be08b408dcb4ae81cff439c152",
-  "sourcePythonHttpVectorSha256": "96af66b2a7913a69f521305967ffdfa40e710b9cf7491f57b7cb787a93be7629",
-  "sourceKeyDiscoveryVectorSha256": "592e4d7edc4b6bd311d8dce08d55e7aa7050cf8df1bff18381edc7a57d8ce7d8",
+  "sourcePythonHttpVectorSha256": "81c0efc9cf8c9c07695a602a8ca252b359a9c4175a98a06223f583f384203a80",
+  "sourceKeyDiscoveryVectorSha256": "a9291673164738204b6ec0a515a1f4f61aab5e280dd2254e743f9beba6d2612b",
   "name": "witness.example/response",
   "nameUtf8Hex": "7769746e6573732e6578616d706c652f726573706f6e7365",
   "endpoint": {
