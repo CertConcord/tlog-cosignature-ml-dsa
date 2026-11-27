@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "profile": "C2SP-20261007-MLDSA87-v2",
+  "sourceVector": "vectors/transport.json",
+  "sourceCase": "one-witness-request",
+  "sourceWireBytes": 6349,
+  "sourceWireSha256": "18d30f65815dcd046dee6e652debda085c39bb25b42db1c0e7e1d48282cd7512",
+  "sourceCheckpointBytes": 6291,
+  "sourceCheckpointSha256": "4d723a5b9748e692fd830e3ffb61c29522b79faa52d69a1915ff79f83dfb6ec5",
+  "manySignatureCount": 10000,
+  "manySignatureLine": "\u2014 w{index} AAAAAAA=\n",
+  "manyCheckpointBytes": 188960,
+  "manyCheckpointSha256": "33754a76a1e3c89d9476b0498f8a5ac2b8eaa8009cf86b1f7648f3b0700ab74a",
+  "cases": [
+    {
+      "id": "checkpoint-getter-one-then-many",
+      "first": "one",
+      "later": "many",
+      "expected": "VALID",
+      "expectedWireBytes": 6349,
+      "expectedWireSha256": "18d30f65815dcd046dee6e652debda085c39bb25b42db1c0e7e1d48282cd7512",
+      "getterReads": 1
+    },
+    {
+      "id": "checkpoint-getter-many-then-one",
+      "first": "many",
+      "later": "one",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "noBase64Decode": true,
+      "getterReads": 1
+    }
+  ]
+}

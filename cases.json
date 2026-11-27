@@ -941,6 +941,16 @@
       "id": "log-key-id-wrong-four-bytes",
       "expected": "CHECKPOINT_LOG_SIGNATURE_REQUIRED",
       "vector": "vectors/log-key-id-buffer.json"
+    },
+    {
+      "id": "checkpoint-getter-one-then-many",
+      "expected": "VALID",
+      "vector": "vectors/checkpoint-accessor.json"
+    },
+    {
+      "id": "checkpoint-getter-many-then-one",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/checkpoint-accessor.json"
     }
   ]
 }

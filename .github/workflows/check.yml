@@ -24,3 +24,4 @@ jobs:
       - run: python3 tools/verify-key-hint-buffer-vectors.py
       - run: python3 tools/verify-signature-verify-buffer-vectors.py
       - run: python3 tools/verify-log-key-id-buffer-vectors.py
+      - run: python3 tools/verify-checkpoint-accessor-vectors.py
