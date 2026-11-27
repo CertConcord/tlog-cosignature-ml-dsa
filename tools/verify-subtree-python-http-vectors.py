@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parent.parent
 read = lambda path: (ROOT / path).read_bytes()
 sha = lambda data: hashlib.sha256(data).hexdigest()
 vector = json.loads(read("vectors/subtree-python-http-interop.json"))
+range_bytes = read("vectors/subtree-python-http-ranges.json")
+range_vector = json.loads(range_bytes)
 live_data = read("vectors/subtree-live-sign.json")
 cross_data = read("vectors/subtree-cross-runtime.json")
 checkpoint_bytes = read("vectors/subtree-cross-runtime-checkpoint.json")
@@ -69,6 +71,8 @@ def mth(items):
 
 
 def proof(start, end, items, omit=True):
+    if start == end:
+        return []
     if start == 0 and end == len(items):
         return [] if omit else [mth(items)]
     split = 1 << ((len(items) - 1).bit_length() - 1)
@@ -118,11 +122,16 @@ def accept_request(data):
         origin, size_line, root_line = body.split(b"\n")
     except ValueError:
         raise Rejected(400) from None
-    if label != b"subtree" or len(proof_lines) > 63 or not proof_lines:
+    if label != b"subtree" or len(proof_lines) > 63:
         raise Rejected(400)
     start, end, size = decimal(start_line), decimal(end_line), decimal(size_line)
-    if origin != b"log.example/response" or size != 14 or (start, end) != (8, 13):
+    if origin != b"log.example/response" or size != 14:
         raise Rejected(403)
+    if not 0 <= start <= end <= size:
+        raise Rejected(422)
+    width = 1 << ((end - start - 1).bit_length()) if end > start else 1
+    if start % width:
+        raise Rejected(422)
     if not signature_line.startswith(b"\xe2\x80\x94 " + name + b" ") or not signature_line.endswith(b"\n"):
         raise Rejected(400)
     if b"\n" in signature_line[:-1]:
@@ -146,13 +155,13 @@ def accept_request(data):
     if subtree_root != mth(leaves[start:end]) or proof_hashes != proof(start, end, leaves):
         raise Rejected(422)
     message = signed_input(origin, start, end, subtree_root, 0)
-    assert message.hex() == vector["signerInputHex"]
     return message
 
 
 class Peer(BaseHTTPRequestHandler):
     seen = []
     mode = None
+    signer_input = None
 
     def log_message(self, *_):
         pass
@@ -165,6 +174,7 @@ class Peer(BaseHTTPRequestHandler):
             if self.path != vector["endpoint"]["path"] or length < 0 or length > 8192:
                 raise Rejected(400)
             message = accept_request(data)
+            type(self).signer_input = message
             if self.mode == "live":
                 signature = ml_dsa_87.sign(private, message, context=b"")
                 assert len(signature) == vector["liveSignatureBytes"]
@@ -195,6 +205,7 @@ class Peer(BaseHTTPRequestHandler):
 def run_case(case):
     Peer.seen = []
     Peer.mode = case["mode"]
+    Peer.signer_input = None
     server = HTTPServer(("127.0.0.1", 0), Peer)
     thread = Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -205,6 +216,8 @@ def run_case(case):
                 item = next(x for x in source["negativeRequests"] if x["id"].endswith("bad-signature"))
             elif case["mode"] == "raw-bad-proof":
                 item = next(x for x in source["wireFailures"] if x["id"].endswith("bad-proof"))
+            elif case["mode"] == "raw-range-bad-proof":
+                item = case
             else:
                 item = next(x for x in source["wireFailures"] if x["id"].endswith("carriage-return"))
             data = wire(item["request"])
@@ -216,7 +229,7 @@ def run_case(case):
             connection.close()
         else:
             result = subprocess.run(
-                ["node", "tools/python-http-interop-client.mjs", str(server.server_port), case["mode"]],
+                ["node", "tools/python-http-interop-client.mjs", str(server.server_port), case["id"]],
                 cwd=ROOT, capture_output=True, text=True, timeout=30, check=True)
             actual = json.loads(result.stdout)
             assert actual["result"] == case["expected"], (case["id"], actual)
@@ -227,6 +240,8 @@ def run_case(case):
             method, path, data = Peer.seen[0]
             assert (method, path) == (vector["endpoint"]["method"], vector["endpoint"]["path"])
             assert data == wire(case.get("request", vector["request"]))
+        if "signerInputHex" in case:
+            assert Peer.signer_input == bytes.fromhex(case["signerInputHex"])
     finally:
         server.shutdown()
         server.server_close()
@@ -246,6 +261,26 @@ except InvalidSignatureError:
     pass
 else:
     raise AssertionError("wrong-message signature accepted")
-for case in vector["cases"]:
+assert sha(range_bytes) == json.loads(read("vectors/manifest.json"))["sha256"]["vectors/subtree-python-http-ranges.json"]
+assert sha(proof_data) == range_vector["sourceConsistencyVectorSha256"]
+assert sha(checkpoint_bytes) == range_vector["sourceCheckpointVectorSha256"]
+assert range_vector["profile"] == vector["profile"]
+assert range_vector["keyHintHex"] == hint.hex()
+note = wire(checkpoint_data["checkpointNote"])
+assert sha(note) == range_vector["checkpointNoteSha256"]
+source_cases = {item["id"]: item for item in proof_source["cases"]}
+assert len(range_vector["cases"]) == 8
+for case in range_vector["cases"]:
+    source_case = source_cases[case["sourceCase"]]
+    assert source_case["expected"] == ("VALID" if case["expected"] == "VALID" else "SUBTREE_PROOF")
+    assert wire(case["request"]) == bytes.fromhex(source_case["requestPrefixUtf8Hex"]) + note
+    assert (case["start"], case["end"], case["proofCount"]) == (
+        source_case["start"], source_case["end"], len(source_case["proofHex"]))
+    if case["expected"] == "VALID":
+        origin = b"log.example/response"
+        expected_input = signed_input(origin, case["start"], case["end"],
+                                      bytes.fromhex(source_case["subtreeHashHex"]), 0)
+        assert expected_input.hex() == case["signerInputHex"]
+for case in [*vector["cases"], *range_vector["cases"]]:
     run_case(case)
-print(f"Python witness peer and Node HTTP client: {len(vector['cases'])} exact cases verified")
+print(f"Python witness peer and Node HTTP client: {len(vector['cases']) + len(range_vector['cases'])} exact cases verified")

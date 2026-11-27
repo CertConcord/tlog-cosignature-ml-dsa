@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { postSignSubtree } from '../reference/client.mjs';
 
 const vector = JSON.parse(readFileSync(new URL('../vectors/subtree-python-http-interop.json', import.meta.url)));
+const rangeVector = JSON.parse(readFileSync(new URL('../vectors/subtree-python-http-ranges.json', import.meta.url)));
 const source = JSON.parse(readFileSync(new URL('../vectors/subtree-live-sign.json', import.meta.url)));
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const bytes = item => {
@@ -13,22 +14,23 @@ const bytes = item => {
   return result;
 };
 
-const [port, mode] = process.argv.slice(2);
+const [port, caseId] = process.argv.slice(2);
 assert.match(port ?? '', /^[0-9]+$/);
-const selected = vector.cases.find(item => item.mode === mode);
-assert(selected && !mode.startsWith('raw-'));
+const selected = [...vector.cases, ...rangeVector.cases].find(item => item.id === caseId);
+assert(selected && !selected.mode.startsWith('raw-'));
+const mode = selected.mode;
 const spki = Buffer.from(source.witness.spkiHex, 'hex');
 assert.equal(sha(spki), vector.spkiSha256);
 const publicKey = createPublicKey({ key: spki, format: 'der', type: 'spki' });
 const admitted = { name: source.witness.name, publicKey, at: source.witness.at };
-const request = bytes(mode === 'bad-proof-local' ? vector.badProofRequest : vector.request).toString('utf8');
+const request = bytes(selected.request ?? (mode === 'bad-proof-local' ? vector.badProofRequest : vector.request)).toString('utf8');
 const prefix = `http://127.0.0.1:${port}/witness`;
 let outcome;
 try {
   const signature = await postSignSubtree(prefix, request, admitted);
   assert.equal(selected.expected, 'VALID');
   assert.equal(signature.length, vector.liveSignatureBytes);
-  assert.equal(verify(null, Buffer.from(vector.signerInputHex, 'hex'),
+  assert.equal(verify(null, Buffer.from(selected.signerInputHex ?? vector.signerInputHex, 'hex'),
     { key: publicKey, context: Buffer.alloc(0) }, signature), true);
   if (mode === 'frozen')
     assert.deepEqual(signature, Buffer.from(bytes(vector.bodies.frozen).toString('ascii').trimEnd(), 'base64'));
