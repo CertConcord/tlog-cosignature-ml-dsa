@@ -21,13 +21,15 @@ export function selectMlDsa87Key(name,keyHint,candidates) {
   let selected;
   for(const candidate of candidates) {
     requireValue(candidate&&typeof candidate==='object','NOTE_KEY_CANDIDATES');
-    requireValue(typeof candidate.name==='string','NOTE_KEY_CANDIDATES');
-    if(candidate.name!==name)continue;
-    requireValue(candidate.publicKey instanceof KeyObject&&candidate.publicKey.type==='public','NOTE_KEY_CANDIDATES');
-    if(candidate.publicKey.asymmetricKeyType!=='ml-dsa-87')continue;
-    if(!mlDsa87KeyID(name,candidate.publicKey).equals(keyHint))continue;
+    const candidateName=candidate.name;
+    requireValue(typeof candidateName==='string','NOTE_KEY_CANDIDATES');
+    if(candidateName!==name)continue;
+    const publicKey=candidate.publicKey;
+    requireValue(publicKey instanceof KeyObject&&publicKey.type==='public','NOTE_KEY_CANDIDATES');
+    if(publicKey.asymmetricKeyType!=='ml-dsa-87')continue;
+    if(!mlDsa87KeyID(name,publicKey).equals(keyHint))continue;
     requireValue(selected===undefined,'NOTE_KEY_AMBIGUOUS');
-    selected=candidate.publicKey;
+    selected=publicKey;
   }
   requireValue(selected!==undefined,'NOTE_KEY_UNKNOWN');
   return selected;

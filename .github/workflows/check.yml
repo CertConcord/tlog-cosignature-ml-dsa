@@ -12,3 +12,4 @@ jobs:
           node-version: 24.15.0
       - run: npm run check
       - run: npm test
+      - run: python3 tools/verify-key-candidate-accessor-vectors.py

@@ -24,6 +24,8 @@ The short hint only selects candidates from already trusted keys. It is not a co
 
 `selectMlDsa87Key` is the reference discovery step after an application explicitly authorizes this experimental profile and supplies at most 64 admitted candidates as public `KeyObject` values. It matches the exact name, actual ML-DSA-87 key type and four hint bytes, rejects duplicate matches, and returns a key for subsequent signature verification. Unrelated candidates may use other UTF-8 names; only the selected name is subject to this profile's ASCII subset. It skips candidates with another algorithm, including ML-DSA-44; it never interprets their C2SP key identifiers as this experimental hint. An unknown or ambiguous hint fails closed, and neither a matching hint nor a matching name admits a new authority.
 
+The reference selector reads each candidate's name and public key once. Checks and the returned key use those captured values, so a changing accessor cannot substitute a different name or key after the hint comparison. The candidate-accessor vectors reference exact admitted SPKI bytes and include both accepted and rejected transitions, including an ML-DSA-44 boundary.
+
 ## 3. Signature input and checkpoint encoding
 
 Use pure ML-DSA-87 with empty context over the existing subtree input:
