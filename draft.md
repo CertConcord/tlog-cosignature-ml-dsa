@@ -26,6 +26,8 @@ The short hint only selects candidates from already trusted keys. It is not a co
 
 The reference selector reads each candidate's name and public key once. Checks and the returned key use those captured values, so a changing accessor cannot substitute a different name or key after the hint comparison. The candidate-accessor vectors reference exact admitted SPKI bytes and include both accepted and rejected transitions, including an ML-DSA-44 boundary.
 
+The candidate array itself has at most 64 dense, own data slots. The selector captures those slot values before reading any candidate fields, so a field accessor cannot remove a conflicting candidate, replace a later slot, or append a 65th candidate during selection. Sparse, inherited and accessor slots fail with `NOTE_KEY_CANDIDATES`. The candidate-array vectors freeze the original name, key and hint bytes alongside both accepted and rejected array transitions.
+
 ## 3. Signature input and checkpoint encoding
 
 Use pure ML-DSA-87 with empty context over the existing subtree input:
