@@ -27,6 +27,12 @@ function requestDecimal(value) {
   requireValue(typeof value === 'bigint' || typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value)), 'SUBTREE_RANGE');
   return decimal(String(value));
 }
+function copiedHash(value) {
+  requireValue(!utilTypes.isProxy(value) && Buffer.isBuffer(value) && utilTypes.isUint8Array(value) && Reflect.apply(nativeByteLength, value, []) === 32, 'SUBTREE_REQUEST');
+  const hash = Buffer.alloc(32);
+  Reflect.apply(nativeSet, hash, [value]);
+  return hash;
+}
 function checkedProof(proof) {
   requireValue(!utilTypes.isProxy(proof) && Array.isArray(proof), 'SUBTREE_REQUEST');
   const count = proof.length;
@@ -34,10 +40,8 @@ function checkedProof(proof) {
   const hashes = [];
   for (let i = 0; i < count; i++) {
     const slot = Object.getOwnPropertyDescriptor(proof, i);
-    requireValue(slot && Object.hasOwn(slot, 'value') && !utilTypes.isProxy(slot.value) && Buffer.isBuffer(slot.value) && utilTypes.isUint8Array(slot.value) && Reflect.apply(nativeByteLength, slot.value, []) === 32, 'SUBTREE_REQUEST');
-    const hash = Buffer.alloc(32);
-    Reflect.apply(nativeSet, hash, [slot.value]);
-    hashes.push(hash);
+    requireValue(slot && Object.hasOwn(slot, 'value'), 'SUBTREE_REQUEST');
+    hashes.push(copiedHash(slot.value));
   }
   return hashes;
 }
@@ -93,12 +97,11 @@ function requestContext(value) {
   const cp = parseCheckpointEnvelope(value.checkpoint);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
   const start = requestDecimal(value.start), end = requestDecimal(value.end);
-  const root = value.root;
-  requireValue(Buffer.isBuffer(root) && root.length === 32, 'SUBTREE_REQUEST');
+  const root = copiedHash(value.root);
   const proof = checkedProof(value.proof);
   requireValue(end <= cp.size, 'SUBTREE_CHECKPOINT_RANGE');
   subtreeInput({ name: cp.signatures[0].name, origin: cp.origin, start, end, root, timestamp: 0 });
-  return { checkpoint: cp.note, origin: cp.origin, start, end, root: Buffer.from(root), proof };
+  return { checkpoint: cp.note, origin: cp.origin, start, end, root, proof };
 }
 export function encodeSubtreeRequest(value) {
   const q = requestContext(value);
