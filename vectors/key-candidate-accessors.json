@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "sourceSpkiVector": "vectors/key-discovery.json",
+  "requestedNameUtf8Hex": "7769746e6573732e6578616d706c65",
+  "otherNameUtf8Hex": "6f746865722e6578616d706c652f7769746e657373",
+  "keyHintHex": "0cfc3c6d",
+  "spkiSha256": {
+    "primary": "cd77e63cef6f3fd17f7a81494e15a3b670a8c1286e76a576fd9c8e5f4f6f7a38",
+    "second": "f75bf0a65aebeb4c646bcec4c61fcdea76f12b3c2850e4de331172289e9199cc",
+    "legacy44": "7480b268f1c77db9dd7c19ebd5c9cac8a6e29e104f4439ef4401785f079fc17f"
+  },
+  "cases": [
+    {
+      "id": "candidate-key-late-ml-dsa-44",
+      "nameReads": [
+        "requested"
+      ],
+      "keyReads": [
+        "primary",
+        "primary",
+        "primary",
+        "primary",
+        "legacy44"
+      ],
+      "expected": "primary",
+      "previousResult": "legacy44"
+    },
+    {
+      "id": "candidate-key-early-ml-dsa-44",
+      "nameReads": [
+        "requested"
+      ],
+      "keyReads": [
+        "legacy44",
+        "primary"
+      ],
+      "expected": "NOTE_KEY_UNKNOWN",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-key-early-other-87",
+      "nameReads": [
+        "requested"
+      ],
+      "keyReads": [
+        "second",
+        "primary"
+      ],
+      "expected": "NOTE_KEY_UNKNOWN",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-name-late-other",
+      "nameReads": [
+        "requested",
+        "other"
+      ],
+      "keyReads": [
+        "primary"
+      ],
+      "expected": "primary",
+      "previousResult": "NOTE_KEY_UNKNOWN"
+    },
+    {
+      "id": "candidate-name-early-other",
+      "nameReads": [
+        "other",
+        "requested"
+      ],
+      "keyReads": [
+        "primary"
+      ],
+      "expected": "NOTE_KEY_UNKNOWN",
+      "previousResult": "primary"
+    }
+  ]
+}

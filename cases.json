@@ -386,6 +386,31 @@
       "id": "proof-accessor-changing",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "candidate-key-late-ml-dsa-44",
+      "expected": "VALID",
+      "vector": "vectors/key-candidate-accessors.json"
+    },
+    {
+      "id": "candidate-key-early-ml-dsa-44",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/key-candidate-accessors.json"
+    },
+    {
+      "id": "candidate-key-early-other-87",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/key-candidate-accessors.json"
+    },
+    {
+      "id": "candidate-name-late-other",
+      "expected": "VALID",
+      "vector": "vectors/key-candidate-accessors.json"
+    },
+    {
+      "id": "candidate-name-early-other",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/key-candidate-accessors.json"
     }
   ]
 }
