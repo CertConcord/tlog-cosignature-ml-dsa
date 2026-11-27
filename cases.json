@@ -1246,6 +1246,31 @@
       "id": "wrong-message-response",
       "expected": "SUBTREE_SIGNATURE",
       "vector": "vectors/subtree-live-sign.json"
+    },
+    {
+      "id": "cross-node-response-python-verify",
+      "expected": "VALID",
+      "vector": "vectors/subtree-cross-runtime.json"
+    },
+    {
+      "id": "cross-node-checkpoint-python-verify",
+      "expected": "VALID",
+      "vector": "vectors/subtree-cross-runtime.json"
+    },
+    {
+      "id": "cross-python-response-node-verify",
+      "expected": "VALID",
+      "vector": "vectors/subtree-cross-runtime.json"
+    },
+    {
+      "id": "cross-python-signature-bad-message",
+      "expected": "INVALID_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime.json"
+    },
+    {
+      "id": "cross-python-signature-bad-context",
+      "expected": "INVALID_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime.json"
     }
   ]
 }

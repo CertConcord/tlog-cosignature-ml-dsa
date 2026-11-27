@@ -1,0 +1,9 @@
+# Test-only pqcrypto 1.0.0 wheels; exact SHA-256 values from PyPI release metadata.
+pqcrypto==1.0.0 \
+    --hash=sha256:3c0aa8346222631418e7caac040a53cc1f5245553d3275ce1d8403cfe8dd9fb4 \
+    --hash=sha256:ccc13a4443a499d70aa9d29ce899e8782d4a5e57b79baa92fa13ea33512533c7 \
+    --hash=sha256:71b199d6460a646071cdb505e6acca8c9a050c3252bba023b8065b9518dce9c9 \
+    --hash=sha256:7068532dbc1225a9d668d59940bd96dc13f40175a757b2e31c69aa697781f4d0 \
+    --hash=sha256:f8c29900937b84ce18943694acb7276af36e2c52e1673debe02ecf9494472a35 \
+    --hash=sha256:9160e59a8b9a860ea960a0b2fb8b479ee2d56f3c062c4be3f86ce346807443dd \
+    --hash=sha256:d65d0fdbd2bfcfd80193d1d499142e63dd8ea6a072e1dc68b1b36fd49f9fdc8f
