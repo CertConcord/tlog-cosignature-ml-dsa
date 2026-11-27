@@ -6,7 +6,7 @@ Status: experimental extension and proposed C2SP amendment. No C2SP algorithm co
 
 The pinned C2SP cosignature editor text defines the selected ML-DSA-44 subtree construction. An issuer or witness policy selecting ML-DSA-87 needs an unambiguous key identifier and explicit negotiation instead of treating another parameter set as that algorithm. ML-DSA-87 is an existing standardized algorithm; this proposal adds no new cryptographic primitive.
 
-The technical change is limited to parameter-set selection, key discovery and interoperable encoding. Issuer admission, quorum, operator independence, retention and document authorization remain external policy.
+The technical change is limited to parameter-set selection, key discovery, interoperable encoding and reference subtree consistency proof verification. Issuer admission, quorum, operator independence, retention and document authorization remain external policy.
 
 ## 2. Experimental selection
 
@@ -77,6 +77,8 @@ The request encoder reads the supplied checkpoint property once. Its early three
 
 The submitted checkpoint MUST contain exactly one note signature, from the selected witness key. It MUST NOT include an additional log or witness signature. The service authenticates that checkpoint with the selected witness's key and verifies subtree consistency before signing. The response MUST use the same witness key. Rotation to a different response key is not inferred from a key hint.
 
+`verifySubtreeRequest` performs those two checks for a complete serialized request: it authenticates the reference checkpoint under the externally admitted ML-DSA-87 witness key, then verifies the ordered SHA-256 subtree consistency proof against that checkpoint by MTC draft-07 Section 4.4.3. A well-formed but invalid proof fails with `SUBTREE_PROOF`. The vectors pin a real 4,627-byte checkpoint signature, exact request bytes, six valid ranges and seven proof failures. An empty range is valid under the pinned MTC definition only with the SHA-256 empty-tree hash and no proof hashes; its proof does not bind content to the checkpoint root. Applications requiring a nonempty committed range must enforce that separately. The existing 63-proof-line transport limit still applies, including where a mathematically valid larger proof cannot be carried.
+
 The standalone `verifySubtreeCheckpoint` gate rejects a second signature line before decoding any signature payload, even if that extra line is malformed. It still scans the bounded input and validates the checkpoint body and root, but does not decode each invalid extra signature. The generic `parseCheckpointEnvelope` remains able to parse structurally valid multi-signature checkpoints; it does not grant witness authority or replace cryptographic verification.
 
 A successful response is canonical padded base64 of exactly 4,627 raw ML-DSA-87 signature bytes followed by one LF. A signed-note response line, zero timestamp prefix, key-hint prefix, extra line or omitted padding is rejected. Neither a parser nor a length check authenticates a response: the client MUST verify the raw signature over the expected origin, range, root and witness name under its selected public key.
@@ -87,7 +89,7 @@ This witness-only request checkpoint is distinct from the published `/checkpoint
 
 The structural log-signature presence gate accepts the external key hint only as a non-proxy Buffer with intrinsic Uint8Array identity and exactly four native bytes. It copies those bytes before comparing with the parsed checkpoint signature. An own `length` or `byteLength` property cannot change a successful structural match; native short or long Buffers, proxy values and other TypedArrays disguised with Buffer's prototype fail with `CHECKPOINT_LOG_KEY`. A different valid four-byte hint still fails with `CHECKPOINT_LOG_SIGNATURE_REQUIRED`. Source bytes must remain stable during this synchronous copy. The log-key-ID vectors freeze the complete checkpoint wire and body, its 68-byte log signature payload, admitted log SPKI and key ID bytes, and ten positive and negative structural outcomes. Applications still must verify the log signature cryptographically under their admitted log key.
 
-The selected reference rejects checkpoint extension lines, duplicate name/key-hint pairs and names outside its ASCII subset. It provides bounded encoding and cryptographic checks, not the log's durable consistency state, an HTTP server or a complete Merkle proof implementation. Those obligations remain mandatory for applications using this transport.
+The selected reference rejects checkpoint extension lines, duplicate name/key-hint pairs and names outside its ASCII subset. It provides bounded encoding, witness-checkpoint authentication and SHA-256 subtree proof verification. It does not provide the log's durable consistency state, origin authorization, application trust policy or an HTTP server. Those obligations remain mandatory for applications using this transport.
 
 ## 5. Downgrade and transition
 
