@@ -14,13 +14,15 @@ const publicKeyFacts=(key,code) => {
   requireValue(key instanceof KeyObject&&!utilTypes.isProxy(key),code);
   requireValue(Reflect.apply(keyRoleGetter,key,[])==='public',code);
   requireValue(Object.getPrototypeOf(key)===nativePublicPrototype,code);
-  const spki=Reflect.apply(nativePublicExport,key,[{type:'spki',format:'der'}]);
+  const isolated=structuredClone(key);
+  requireValue(Object.getPrototypeOf(isolated)===nativePublicPrototype,code);
+  const spki=Reflect.apply(nativePublicExport,isolated,[{type:'spki',format:'der'}]);
   requireValue(Buffer.isBuffer(spki),code);
   const canonical=createPublicKey({key:spki,type:'spki',format:'der'});
   requireValue(Object.getPrototypeOf(canonical)===nativePublicPrototype,code);
-  const algorithm=Reflect.apply(nativeAlgorithmGetter,key,[]);
+  const algorithm=Reflect.apply(nativeAlgorithmGetter,isolated,[]);
   requireValue(algorithm===Reflect.apply(nativeAlgorithmGetter,canonical,[]),code);
-  return {algorithm,spki};
+  return {algorithm,spki,canonical};
 };
 const exactInteger = n => {requireValue(typeof n==='bigint'||(typeof n==='number'&&Number.isSafeInteger(n)),'SUBTREE_INTEGER');return BigInt(n);};
 const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
@@ -89,7 +91,9 @@ export function subtreeInput({name,origin,start=0n,end,root,timestamp=0}) {
   return Buffer.concat([Buffer.from('subtree/v1\n\0'),text(name),u64(timestamp),text(origin),u64(start),u64(end),root]);
 }
 export function verifyCosignature(context,signature,key) {
-  const facts=publicKeyFacts(key,'NOTE_KEY_SCHEME');
+  if(key instanceof KeyObject)requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
+  const publicKey=key instanceof KeyObject&&Reflect.apply(keyRoleGetter,key,[])==='private'?createPublicKey(structuredClone(key)):key;
+  const facts=publicKeyFacts(publicKey,'NOTE_KEY_SCHEME');
   requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
-  return Buffer.isBuffer(signature)&&signature.length===4627&&verify(null,subtreeInput(context),key,signature);
+  return Buffer.isBuffer(signature)&&signature.length===4627&&verify(null,subtreeInput(context),{key:facts.canonical,context:Buffer.alloc(0)},signature);
 }

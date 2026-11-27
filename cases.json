@@ -533,6 +533,11 @@
       "vector": "vectors/keyobject-boundary.json"
     },
     {
+      "id": "keyobject-throwing-algorithm-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
       "id": "keyobject-shadowed-export-87",
       "expected": "VALID",
       "vector": "vectors/keyobject-boundary.json"
@@ -563,6 +568,11 @@
       "vector": "vectors/keyobject-boundary.json"
     },
     {
+      "id": "keyobject-hint-throwing-algorithm-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
       "id": "keyobject-verify-shadowed-44",
       "expected": "NOTE_KEY_SCHEME",
       "vector": "vectors/keyobject-boundary.json"
@@ -570,6 +580,16 @@
     {
       "id": "keyobject-verify-shadowed-87",
       "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-verify-shadowed-context-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-verify-shadowed-context-altered-origin",
+      "expected": "INVALID",
       "vector": "vectors/keyobject-boundary.json"
     }
   ]

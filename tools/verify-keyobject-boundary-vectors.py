@@ -16,6 +16,14 @@ assert name == source["name"].encode("utf-8") == prefix["context"]["name"].encod
 signature = bytes.fromhex(prefix["signature"])
 assert len(signature) == 4627
 assert hashlib.sha256(signature).hexdigest() == vector["signatureSha256"]
+input_bytes = bytes.fromhex(prefix["input"])
+assert hashlib.sha256(input_bytes).hexdigest() == vector["inputSha256"]
+original_origin = prefix["context"]["origin"].encode("utf-8")
+altered_origin = b"issuer.example/bad"
+assert len(original_origin) == len(altered_origin)
+assert input_bytes.count(original_origin) == 1
+altered_input = input_bytes.replace(original_origin, altered_origin)
+assert hashlib.sha256(altered_input).hexdigest() == vector["alteredInputSha256"]
 
 keys = {label: bytes.fromhex(hex_bytes) for label, hex_bytes in source["keys"].items()}
 oid87 = bytes.fromhex("0609608648016503040313")
@@ -61,12 +69,22 @@ for case in vector["cases"]:
             previous = "NOTE_KEY_UNKNOWN"
         else:
             previous = actual_key
+        if case.get("throwAlgorithmGetter"):
+            previous = "SHADOW_READ"
     elif operation == "hint":
         expected = actual_key if actual == "ml-dsa-87" else "NOTE_KEY_SCHEME"
         previous = case.get("shadowExport", actual_key) if observed_algorithm == "ml-dsa-87" else "NOTE_KEY_SCHEME"
+        if case.get("throwAlgorithmGetter"):
+            previous = "SHADOW_READ"
     elif operation == "verify":
         expected = actual_key if actual == "ml-dsa-87" else "NOTE_KEY_SCHEME"
+        if case.get("alteredOriginUtf8Hex"):
+            assert bytes.fromhex(case["alteredOriginUtf8Hex"]) == altered_origin
+            expected = "INVALID"
         previous = "NOTE_KEY_SCHEME" if observed_algorithm != "ml-dsa-87" else (actual_key if actual == "ml-dsa-87" else "false")
+        if case.get("shadowContextHex") and previous == actual_key:
+            assert bytes.fromhex(case["shadowContextHex"]) != b""
+            previous = "false"
     else:
         raise AssertionError(case["id"])
     assert case["expected"] == expected, case["id"]

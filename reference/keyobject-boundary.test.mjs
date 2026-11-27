@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createHash, createPublicKey, generateKeyPairSync } from 'node:crypto';
+import { createHash, createPublicKey, generateKeyPairSync, sign } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { mlDsa87KeyID, selectMlDsa87Key, verifyCosignature } from './extension.mjs';
+import { mlDsa87KeyID, selectMlDsa87Key, subtreeInput, verifyCosignature } from './extension.mjs';
 
 const vector = JSON.parse(readFileSync(new URL('../vectors/keyobject-boundary.json', import.meta.url)));
 const source = JSON.parse(readFileSync(new URL('../vectors/key-discovery.json', import.meta.url)));
@@ -19,6 +19,9 @@ test('KeyObject boundary vector fixes exact SPKI, hint and signature bytes', () 
   assert.equal(name, source.name);
   assert.equal(vector.hintHex.primary, source.keyHint);
   assert.equal(vector.signatureSha256, createHash('sha256').update(signature).digest('hex'));
+  assert.equal(vector.inputSha256, createHash('sha256').update(subtreeInput(context)).digest('hex'));
+  const alteredOrigin = Buffer.from(vector.cases.find(item => item.alteredOriginUtf8Hex).alteredOriginUtf8Hex, 'hex').toString('utf8');
+  assert.equal(vector.alteredInputSha256, createHash('sha256').update(subtreeInput({ ...context, origin: alteredOrigin })).digest('hex'));
   for (const [id, bytes] of Object.entries(spki)) {
     assert.equal(vector.spkiSha256[id], createHash('sha256').update(bytes).digest('hex'));
     const hint = createHash('sha256').update(Buffer.concat([
@@ -31,8 +34,12 @@ test('KeyObject boundary vector fixes exact SPKI, hint and signature bytes', () 
 for (const item of vector.cases) test('KeyObject boundary: ' + item.id, () => {
   let key = createPublicKey({ key: spki[item.actualKey], format: 'der', type: 'spki' });
   if (item.shadowAlgorithm) Object.defineProperty(key, 'asymmetricKeyType', { value: item.shadowAlgorithm });
+  if (item.throwAlgorithmGetter) Object.defineProperty(key, 'asymmetricKeyType', {
+    get() { throw Object.assign(new Error('shadow read'), { code: 'SHADOW_READ' }); },
+  });
   if (item.shadowType) Object.defineProperty(key, 'type', { value: item.shadowType });
   if (item.shadowExport) Object.defineProperty(key, 'export', { value: () => spki[item.shadowExport] });
+  if (item.shadowContextHex) Object.defineProperty(key, 'context', { value: Buffer.from(item.shadowContextHex, 'hex') });
   if (item.prototypeAlgorithm) {
     const altered = Object.create(Object.getPrototypeOf(key));
     Object.defineProperties(altered, {
@@ -51,11 +58,16 @@ for (const item of vector.cases) test('KeyObject boundary: ' + item.id, () => {
   const call = () => {
     if (item.operation === 'select') return selectMlDsa87Key(name, Buffer.from(vector.hintHex[item.hint], 'hex'), [{ name, publicKey: key }]);
     if (item.operation === 'hint') return mlDsa87KeyID(name, key).toString('hex');
-    if (item.operation === 'verify') return verifyCosignature(context, signature, key);
+    if (item.operation === 'verify') {
+      const currentContext = item.alteredOriginUtf8Hex
+        ? { ...context, origin: Buffer.from(item.alteredOriginUtf8Hex, 'hex').toString('utf8') } : context;
+      return verifyCosignature(currentContext, signature, key);
+    }
     throw new Error('unknown operation');
   };
   try {
     if (item.expected.startsWith('NOTE_')) assert.throws(call, { code: item.expected });
+    else if (item.expected === 'INVALID') assert.equal(call(), false);
     else if (item.operation === 'select') assert.equal(call(), key);
     else if (item.operation === 'hint') assert.equal(call(), vector.hintHex[item.expected]);
     else assert.equal(call(), true);
@@ -71,4 +83,12 @@ test('private ML-DSA-87 KeyObject still derives its actual public SPKI hint', ()
   assert.deepEqual(mlDsa87KeyID(name, privateKey), expected);
   Object.defineProperty(privateKey, 'type', { value: 'public' });
   assert.deepEqual(mlDsa87KeyID(name, privateKey), expected);
+});
+
+test('ordinary private ML-DSA-87 KeyObject still verifies a signature', () => {
+  const { publicKey, privateKey } = generateKeyPairSync('ml-dsa-87');
+  const message = subtreeInput(context);
+  const freshSignature = sign(null, message, { key: privateKey, context: Buffer.alloc(0) });
+  assert.equal(verifyCosignature(context, freshSignature, publicKey), true);
+  assert.equal(verifyCosignature(context, freshSignature, privateKey), true);
 });
