@@ -28,3 +28,4 @@ jobs:
       - run: python3 tools/verify-revoked-keyobject-vectors.py
       - run: python3 tools/verify-subtree-consistency-vectors.py
       - run: python3 tools/verify-subtree-response-auth-vectors.py
+      - run: python3 tools/verify-subtree-http-vectors.py

@@ -1096,6 +1096,51 @@
       "id": "response-request-proof-altered",
       "expected": "SUBTREE_PROOF",
       "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "http-valid",
+      "expected": "HTTP_200",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-malformed-range",
+      "expected": "HTTP_400",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-invalid-proof",
+      "expected": "HTTP_422",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-invalid-checkpoint-signature",
+      "expected": "HTTP_403",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-wrong-admitted-witness-key",
+      "expected": "HTTP_403",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-future-checkpoint",
+      "expected": "HTTP_403",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-unknown-origin",
+      "expected": "HTTP_404",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-wrong-signer-key",
+      "expected": "SUBTREE_SIGNER_SIGNATURE",
+      "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "http-short-signer-signature",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/subtree-http.json"
     }
   ]
 }
