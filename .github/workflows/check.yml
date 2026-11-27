@@ -19,3 +19,4 @@ jobs:
       - run: python3 tools/verify-proof-array-vectors.py
       - run: python3 tools/verify-proof-buffer-vectors.py
       - run: python3 tools/verify-root-buffer-vectors.py
+      - run: python3 tools/verify-response-buffer-vectors.py
