@@ -638,6 +638,16 @@
       "vector": "vectors/proof-buffer.json"
     },
     {
+      "id": "proof-buffer-uint16-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "proof-buffer-uint32-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/proof-buffer.json"
+    },
+    {
       "id": "proof-buffer-proxy",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/proof-buffer.json"

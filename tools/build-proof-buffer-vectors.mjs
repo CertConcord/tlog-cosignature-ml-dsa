@@ -26,6 +26,8 @@ const vectors = {
     { id: 'proof-buffer-shadow-byte-length-throws', hash: 'a', decoration: 'byte-length-throws', expected: 'VALID', wire: 'one' },
     { id: 'proof-buffer-native-short-spoof', hash: 'short', decoration: 'length-32', expected: 'SUBTREE_REQUEST', noWire: true },
     { id: 'proof-buffer-native-long-spoof', hash: 'long', decoration: 'length-32', expected: 'SUBTREE_REQUEST', noWire: true },
+    { id: 'proof-buffer-uint16-buffer-prototype', hash: 'a', decoration: 'uint16-buffer-prototype', expected: 'SUBTREE_REQUEST', noWire: true, priorElementCopyHex: '5a'.repeat(16) + '00'.repeat(16) },
+    { id: 'proof-buffer-uint32-buffer-prototype', hash: 'a', decoration: 'uint32-buffer-prototype', expected: 'SUBTREE_REQUEST', noWire: true, priorElementCopyHex: '5a'.repeat(8) + '00'.repeat(24) },
     { id: 'proof-buffer-proxy', hash: 'a', decoration: 'proxy', expected: 'SUBTREE_REQUEST', noWire: true },
     { id: 'proof-buffer-revoked-proxy', hash: 'a', decoration: 'revoked-proxy', expected: 'SUBTREE_REQUEST', noWire: true },
   ],

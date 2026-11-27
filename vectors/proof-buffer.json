@@ -57,6 +57,22 @@
       "noWire": true
     },
     {
+      "id": "proof-buffer-uint16-buffer-prototype",
+      "hash": "a",
+      "decoration": "uint16-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "noWire": true,
+      "priorElementCopyHex": "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a00000000000000000000000000000000"
+    },
+    {
+      "id": "proof-buffer-uint32-buffer-prototype",
+      "hash": "a",
+      "decoration": "uint32-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "noWire": true,
+      "priorElementCopyHex": "5a5a5a5a5a5a5a5a000000000000000000000000000000000000000000000000"
+    },
+    {
       "id": "proof-buffer-proxy",
       "hash": "a",
       "decoration": "proxy",

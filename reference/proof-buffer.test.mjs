@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { types as utilTypes } from 'node:util';
 import { encodeSubtreeRequest, parseSubtreeRequest } from './transport.mjs';
 
 const vectors = JSON.parse(readFileSync(new URL('../vectors/proof-buffer.json', import.meta.url)));
@@ -26,6 +27,8 @@ for (const item of vectors.cases) {
       case 'length-32': Object.defineProperty(hash, 'length', { get() { return 32; } }); break;
       case 'length-throws': Object.defineProperty(hash, 'length', { get() { throw new Error('SHADOW_LENGTH_READ'); } }); break;
       case 'byte-length-throws': Object.defineProperty(hash, 'byteLength', { get() { throw new Error('SHADOW_BYTE_LENGTH_READ'); } }); break;
+      case 'uint16-buffer-prototype': hash = new Uint16Array(hash.buffer.slice(hash.byteOffset, hash.byteOffset + hash.byteLength)); Object.setPrototypeOf(hash, Buffer.prototype); break;
+      case 'uint32-buffer-prototype': hash = new Uint32Array(hash.buffer.slice(hash.byteOffset, hash.byteOffset + hash.byteLength)); Object.setPrototypeOf(hash, Buffer.prototype); break;
       case 'proxy': hash = new Proxy(hash, {}); break;
       case 'revoked-proxy': {
         const wrapped = Proxy.revocable(hash, {});
@@ -34,6 +37,15 @@ for (const item of vectors.cases) {
         break;
       }
       default: throw new Error(item.decoration);
+    }
+    if (item.priorElementCopyHex) {
+      assert.equal(Buffer.isBuffer(hash), true);
+      assert.equal(utilTypes.isUint8Array(hash), false);
+      assert.equal(Reflect.apply(Object.getOwnPropertyDescriptor(Object.getPrototypeOf(Uint8Array.prototype), 'byteLength').get, hash, []), 32);
+      const priorCopy = Buffer.alloc(32);
+      Reflect.apply(Uint8Array.prototype.set, priorCopy, [hash]);
+      assert.equal(priorCopy.toString('hex'), item.priorElementCopyHex);
+      assert.notEqual(priorCopy.toString('hex'), vectors.hashes[item.hash]);
     }
     const request = { ...base, proof: [hash] };
     if (item.expected === 'VALID') {

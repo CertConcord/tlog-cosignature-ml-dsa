@@ -34,7 +34,7 @@ function checkedProof(proof) {
   const hashes = [];
   for (let i = 0; i < count; i++) {
     const slot = Object.getOwnPropertyDescriptor(proof, i);
-    requireValue(slot && Object.hasOwn(slot, 'value') && !utilTypes.isProxy(slot.value) && Buffer.isBuffer(slot.value) && Reflect.apply(nativeByteLength, slot.value, []) === 32, 'SUBTREE_REQUEST');
+    requireValue(slot && Object.hasOwn(slot, 'value') && !utilTypes.isProxy(slot.value) && Buffer.isBuffer(slot.value) && utilTypes.isUint8Array(slot.value) && Reflect.apply(nativeByteLength, slot.value, []) === 32, 'SUBTREE_REQUEST');
     const hash = Buffer.alloc(32);
     Reflect.apply(nativeSet, hash, [slot.value]);
     hashes.push(hash);

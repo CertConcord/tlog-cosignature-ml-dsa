@@ -29,6 +29,8 @@ expected = {
     "proof-buffer-shadow-byte-length-throws": ("a", "byte-length-throws", "VALID"),
     "proof-buffer-native-short-spoof": ("short", "length-32", "SUBTREE_REQUEST"),
     "proof-buffer-native-long-spoof": ("long", "length-32", "SUBTREE_REQUEST"),
+    "proof-buffer-uint16-buffer-prototype": ("a", "uint16-buffer-prototype", "SUBTREE_REQUEST"),
+    "proof-buffer-uint32-buffer-prototype": ("a", "uint32-buffer-prototype", "SUBTREE_REQUEST"),
     "proof-buffer-proxy": ("a", "proxy", "SUBTREE_REQUEST"),
     "proof-buffer-revoked-proxy": ("a", "revoked-proxy", "SUBTREE_REQUEST"),
 }
@@ -44,5 +46,10 @@ for case in vectors["cases"]:
         assert one_wire.hex() == vectors["wires"][case["wire"]]["hex"]
     else:
         assert case["noWire"] is True and "wire" not in case
+        if decoration in ("uint16-buffer-prototype", "uint32-buffer-prototype"):
+            width = 2 if decoration.startswith("uint16") else 4
+            prior_element_copy = bytes([0x5A]) * (len(native) // width) + bytes(32 - len(native) // width)
+            assert case["priorElementCopyHex"] == prior_element_copy.hex()
+            assert prior_element_copy != native
 assert not expected
-print("Proof Buffer bytes: 1 full wire and 8 native-byte cases independently replayed")
+print("Proof Buffer bytes: 1 full wire and 10 native-byte cases independently replayed")
