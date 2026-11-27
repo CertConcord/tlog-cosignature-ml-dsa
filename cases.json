@@ -1601,6 +1601,31 @@
       "id": "large-u64-18446744069414649856-last-bad-proof",
       "expected": "SUBTREE_PROOF",
       "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-http-frozen-valid",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64-http.json"
+    },
+    {
+      "id": "large-u64-http-live-valid",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64-http.json"
+    },
+    {
+      "id": "large-u64-http-wrong-response",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-large-u64-http.json"
+    },
+    {
+      "id": "large-u64-http-bad-proof-local",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64-http.json"
+    },
+    {
+      "id": "large-u64-http-raw-bad-proof",
+      "expected": "HTTP_422",
+      "vector": "vectors/subtree-large-u64-http.json"
     }
   ]
 }

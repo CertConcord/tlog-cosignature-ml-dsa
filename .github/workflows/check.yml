@@ -39,3 +39,4 @@ jobs:
       - run: .venv-cross/bin/python tools/verify-subtree-python-http-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-boundary-matrix-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-large-u64-vectors.py
+      - run: .venv-cross/bin/python tools/verify-subtree-large-u64-http-vectors.py
