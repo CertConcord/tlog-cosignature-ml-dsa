@@ -1,4 +1,5 @@
 import { mlDsa87KeyID, subtreeInput, verifyCosignature } from './extension.mjs';
+import { createHash } from 'node:crypto';
 import { types as utilTypes } from 'node:util';
 
 // This module selects one editor protocol. There is no legacy wire fallback.
@@ -44,6 +45,43 @@ function checkedProof(proof) {
     hashes.push(copiedHash(slot.value));
   }
   return hashes;
+}
+
+// MTC draft-07 Section 4.4.3, using the SHA-256 Merkle tree fixed by this
+// C2SP checkpoint profile. Inputs have already passed the wire parser.
+const emptyHash = createHash('sha256').digest();
+const joinedHash = (left, right) => createHash('sha256').update(Buffer.concat([Buffer.from([1]), left, right])).digest();
+function validSubtreeProof(request, checkpoint) {
+  const { start, end, root: nodeHash, proof } = request;
+  const { size: n, root: rootHash } = checkpoint;
+  if (start === end) return proof.length === 0 && same(nodeHash, emptyHash);
+
+  let fn = start, sn = end - 1n, tn = n - 1n;
+  if (sn === tn) {
+    while (fn !== sn) { fn >>= 1n; sn >>= 1n; tn >>= 1n; }
+  } else {
+    while (fn !== sn && (sn & 1n) !== 0n) { fn >>= 1n; sn >>= 1n; tn >>= 1n; }
+  }
+
+  let fr, sr, index = 0;
+  if (fn === sn) fr = sr = nodeHash;
+  else {
+    if (proof.length === 0) return false;
+    fr = sr = proof[index++];
+  }
+  for (; index < proof.length; index++) {
+    if (tn === 0n) return false;
+    const current = proof[index];
+    if ((sn & 1n) !== 0n || sn === tn) {
+      if (fn < sn) fr = joinedHash(current, fr);
+      sr = joinedHash(current, sr);
+      while ((sn & 1n) === 0n) { fn >>= 1n; sn >>= 1n; tn >>= 1n; }
+    } else {
+      sr = joinedHash(sr, current);
+    }
+    fn >>= 1n; sn >>= 1n; tn >>= 1n;
+  }
+  return tn === 0n && same(fr, nodeHash) && same(sr, rootHash);
 }
 
 function parseCheckpoint(note, oneSignature) {
@@ -122,6 +160,15 @@ export function parseSubtreeRequest(text) {
   const range = /^subtree (0|[1-9][0-9]*) (0|[1-9][0-9]*)$/.exec(rangeLine);
   requireValue(range, 'SUBTREE_RANGE');
   return requestContext({ start: range[1], end: range[2], root: unbase64(lines.shift()), proof: lines.map(unbase64), checkpoint: text.slice(cut + 2) });
+}
+
+// Validates a complete request under the configured witness key. The caller
+// still enforces durable witnessed-log state and origin authorization.
+export function verifySubtreeRequest(text, witness) {
+  const request = parseSubtreeRequest(text);
+  const checkpoint = verifySubtreeCheckpoint(request.checkpoint, witness);
+  requireValue(validSubtreeProof(request, checkpoint), 'SUBTREE_PROOF');
+  return request;
 }
 
 // Callers verify subtree consistency separately before signing. This validates

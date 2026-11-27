@@ -981,6 +981,71 @@
       "id": "keyobject-verify-revoked",
       "expected": "NOTE_KEY_SCHEME",
       "vector": "vectors/revoked-keyobject.json"
+    },
+    {
+      "id": "n14-range0-3",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "n14-range4-8",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "n14-range8-13",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "n14-range13-14",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "n14-range0-14",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "n14-range5-5",
+      "expected": "VALID",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "altered-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "truncated-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "surplus-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "altered-subtree-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "nonempty-missing-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "empty-wrong-hash",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "empty-surplus-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-consistency.json"
     }
   ]
 }
