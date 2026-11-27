@@ -1526,6 +1526,81 @@
       "id": "boundary-n257-empty-right-bad-root",
       "expected": "SUBTREE_PROOF",
       "vector": "vectors/subtree-boundary-matrix.json"
+    },
+    {
+      "id": "large-u64-281474959937536-full",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-281474959937536-tail",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-281474959937536-last",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-281474959937536-last-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-281474959937536-last-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-9223372034707324928-full",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-9223372034707324928-tail",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-9223372034707324928-last",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-9223372034707324928-last-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-9223372034707324928-last-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-18446744069414649856-full",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-18446744069414649856-tail",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-18446744069414649856-last",
+      "expected": "VALID",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-18446744069414649856-last-bad-root",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
+    },
+    {
+      "id": "large-u64-18446744069414649856-last-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-large-u64.json"
     }
   ]
 }

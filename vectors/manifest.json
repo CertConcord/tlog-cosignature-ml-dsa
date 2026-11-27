@@ -34,6 +34,7 @@
     "vectors/subtree-python-http-interop.json": "96af66b2a7913a69f521305967ffdfa40e710b9cf7491f57b7cb787a93be7629",
     "vectors/subtree-python-http-ranges.json": "4589a58b4d5587a8d8d0d1d373082cee69059bcaa6f5e7bcd31f58745c049fff",
     "vectors/subtree-python-http-discovery.json": "b8d9eb2a6dbd91e881304c765213c6148f83ce77bfdff281e58e21ceea89cc0e",
-    "vectors/subtree-boundary-matrix.json": "a788c9672a748e4340c7a9de7f0ffff73da08f43f3a9b61caa8328216e1dcd3d"
+    "vectors/subtree-boundary-matrix.json": "a788c9672a748e4340c7a9de7f0ffff73da08f43f3a9b61caa8328216e1dcd3d",
+    "vectors/subtree-large-u64.json": "c2a204ffc75921207098f4034562a2954faf63ed122d9452ec1d51e31efa7a3d"
   }
 }
