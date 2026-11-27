@@ -1431,6 +1431,41 @@
       "id": "python-http-range-empty-surplus-proof",
       "expected": "HTTP_422",
       "vector": "vectors/subtree-python-http-ranges.json"
+    },
+    {
+      "id": "python-http-discovery-exact-frozen",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-mixed-live",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-ml-dsa-44-only",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-unknown-hint",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-duplicate",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-other-key-checkpoint",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/subtree-python-http-discovery.json"
+    },
+    {
+      "id": "python-http-discovery-other-name",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/subtree-python-http-discovery.json"
     }
   ]
 }
