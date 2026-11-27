@@ -53,6 +53,11 @@
       "utf8Hex": "6572726f720a",
       "bytes": 6,
       "sha256": "f097b5f4f46cda2da21b954c9ff4097e1e14ae7064ecdee2c2cec2d3c1f08e6b"
+    },
+    "redirect": {
+      "utf8Hex": "72656469726563740a",
+      "bytes": 9,
+      "sha256": "9ec3accb648c6979ccc8a290fd4159f9c90f42de9fb2dd77e00a95a1fae02e19"
     }
   },
   "cases": [
@@ -129,11 +134,37 @@
       "sent": true
     },
     {
+      "id": "client-redirect-status-no-follow",
+      "request": "valid",
+      "response": "redirect",
+      "httpStatus": 302,
+      "expected": "SUBTREE_HTTP_STATUS",
+      "sent": true
+    },
+    {
       "id": "client-bad-prefix-before-send",
       "request": "valid",
       "response": "valid",
       "httpStatus": 200,
       "prefix": "http://user:pass@127.0.0.1/",
+      "expected": "SUBTREE_HTTP_URL",
+      "sent": false
+    },
+    {
+      "id": "client-empty-query-before-send",
+      "request": "valid",
+      "response": "valid",
+      "httpStatus": 200,
+      "prefix": "http://127.0.0.1/witness?",
+      "expected": "SUBTREE_HTTP_URL",
+      "sent": false
+    },
+    {
+      "id": "client-empty-fragment-before-send",
+      "request": "valid",
+      "response": "valid",
+      "httpStatus": 200,
+      "prefix": "http://127.0.0.1/witness#",
       "expected": "SUBTREE_HTTP_URL",
       "sent": false
     }

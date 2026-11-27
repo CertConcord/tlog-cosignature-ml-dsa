@@ -1188,7 +1188,22 @@
       "vector": "vectors/subtree-http-client.json"
     },
     {
+      "id": "client-redirect-status-no-follow",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
       "id": "client-bad-prefix-before-send",
+      "expected": "SUBTREE_HTTP_URL",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-empty-query-before-send",
+      "expected": "SUBTREE_HTTP_URL",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-empty-fragment-before-send",
       "expected": "SUBTREE_HTTP_URL",
       "vector": "vectors/subtree-http-client.json"
     }

@@ -6,9 +6,11 @@ function endpoint(prefix) {
   if (typeof prefix !== 'string') throw failure('SUBTREE_HTTP_URL');
   let url;
   try { url = new URL(prefix); } catch { throw failure('SUBTREE_HTTP_URL'); }
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash)
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password ||
+      url.href.includes('?') || url.href.includes('#'))
     throw failure('SUBTREE_HTTP_URL');
-  return url.href + (url.href.endsWith('/') ? '' : '/') + 'sign-subtree';
+  url.pathname += (url.pathname.endsWith('/') ? '' : '/') + 'sign-subtree';
+  return url.href;
 }
 
 async function boundedBody(response) {
@@ -39,7 +41,7 @@ export async function postSignSubtree(prefix, requestText, witness, { signal } =
   const admitted = { name, publicKey, at, maxFutureSkew };
   verifySubtreeRequest(requestText, admitted);
   const response = await fetch(target, { method: 'POST', body: Buffer.from(requestText, 'utf8'),
-    redirect: 'error', signal });
+    redirect: 'manual', signal });
   if (response.status !== 200) {
     try { await response.body?.cancel(); } catch { /* retain the status error */ }
     throw failure('SUBTREE_HTTP_STATUS', response.status);

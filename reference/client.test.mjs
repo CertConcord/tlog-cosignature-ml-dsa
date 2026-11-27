@@ -25,7 +25,7 @@ async function peer(status, body, action) {
     const parts = [];
     for await (const part of request) parts.push(part);
     seen.push({ method: request.method, path: request.url, body: Buffer.concat(parts) });
-    response.writeHead(status);
+    response.writeHead(status, status === 302 ? { Location: '/followed' } : {});
     response.end(body);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
