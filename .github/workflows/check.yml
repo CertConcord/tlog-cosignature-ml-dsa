@@ -20,3 +20,5 @@ jobs:
       - run: python3 tools/verify-proof-buffer-vectors.py
       - run: python3 tools/verify-root-buffer-vectors.py
       - run: python3 tools/verify-response-buffer-vectors.py
+      - run: python3 tools/verify-context-root-vectors.py
+      - run: python3 tools/verify-key-hint-buffer-vectors.py

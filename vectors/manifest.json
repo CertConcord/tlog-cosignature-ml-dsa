@@ -16,6 +16,8 @@
     "vectors/sparse-proof.json": "5921e477088d83e37c04a89f5b8407bc2edcef58c10d8219d4cda07cb009a9c8",
     "vectors/proof-buffer.json": "211e498e7e18110b0453c77bdc53de7fc602275e91622514fca8a57688bf0c1c",
     "vectors/root-buffer.json": "280808b3d3330d6349a18f55753d7b9a5721c63f43a213a98a1bb4a71c2cfe85",
-    "vectors/response-buffer.json": "d741f493527a63744f812e5494ef03ed1c1c839ef9ed9f9a0f03125070180fdf"
+    "vectors/response-buffer.json": "d741f493527a63744f812e5494ef03ed1c1c839ef9ed9f9a0f03125070180fdf",
+    "vectors/context-root.json": "03bda3c346e6114e893265fe7899d70f725bd36441195053c7f925022853997f",
+    "vectors/key-hint-buffer.json": "e6a4474b5861f4cc4778b262d100481c04183251a2cbdf05eb101842f2df16c4"
   }
 }
