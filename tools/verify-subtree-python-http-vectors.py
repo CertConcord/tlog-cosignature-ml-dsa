@@ -20,6 +20,10 @@ sha = lambda data: hashlib.sha256(data).hexdigest()
 vector = json.loads(read("vectors/subtree-python-http-interop.json"))
 range_bytes = read("vectors/subtree-python-http-ranges.json")
 range_vector = json.loads(range_bytes)
+discovery_bytes = read("vectors/subtree-python-http-discovery.json")
+discovery_vector = json.loads(discovery_bytes)
+key_discovery_bytes = read("vectors/key-discovery.json")
+key_discovery = json.loads(key_discovery_bytes)
 live_data = read("vectors/subtree-live-sign.json")
 cross_data = read("vectors/subtree-cross-runtime.json")
 checkpoint_bytes = read("vectors/subtree-cross-runtime-checkpoint.json")
@@ -283,4 +287,132 @@ for case in range_vector["cases"]:
         assert expected_input.hex() == case["signerInputHex"]
 for case in [*vector["cases"], *range_vector["cases"]]:
     run_case(case)
-print(f"Python witness peer and Node HTTP client: {len(vector['cases']) + len(range_vector['cases'])} exact cases verified")
+
+
+# Reconstruct admission independently of the Node selector. The Python peer
+# observes the actual request or proves that a rejected registry caused no POST.
+assert sha(discovery_bytes) == json.loads(read("vectors/manifest.json"))["sha256"][
+    "vectors/subtree-python-http-discovery.json"]
+assert discovery_vector["sourceLiveVectorSha256"] == sha(live_data)
+assert discovery_vector["sourcePythonHttpVectorSha256"] == sha(read(
+    "vectors/subtree-python-http-interop.json"))
+assert discovery_vector["sourceKeyDiscoveryVectorSha256"] == sha(key_discovery_bytes)
+assert discovery_vector["profile"] == vector["profile"]
+assert discovery_vector["discoveryProfile"] == "CERTCONCORD-MLDSA87-SUBTREE-v1"
+assert discovery_vector["nameUtf8Hex"] == name.hex()
+assert discovery_vector["name"] == name.decode("ascii")
+assert discovery_vector["endpoint"] == vector["endpoint"]
+assert wire(discovery_vector["request"]) == wire(vector["request"])
+assert discovery_vector["signerInputHex"] == vector["signerInputHex"]
+assert (discovery_vector["frozenResponseBytes"],
+        discovery_vector["frozenResponseSha256"]) == (
+    vector["bodies"]["frozen"]["bytes"], vector["bodies"]["frozen"]["sha256"])
+key_sources = {
+    "live87": spki,
+    "other87": bytes.fromhex(key_discovery["keys"]["second"]),
+    "legacy44": bytes.fromhex(key_discovery["keys"]["legacy44"]),
+}
+assert len(key_sources["other87"]) == 2614 and len(key_sources["legacy44"]) == 1334
+for key_name, der in key_sources.items():
+    item = discovery_vector["keys"][key_name]
+    assert (len(der), sha(der)) == (item["spkiBytes"], item["spkiSha256"])
+    if key_name == "legacy44":
+        assert item["algorithm"] == "ml-dsa-44"
+        assert "experimentalHintHex" not in item
+    else:
+        assert item["algorithm"] == "ml-dsa-87"
+        assert item["experimentalHintHex"] == hashlib.sha256(
+            b"certconcord/tlog-ml-dsa-87/v1\n" + name + b"\n" + der
+        ).digest()[:4].hex()
+assert discovery_vector["keys"]["live87"]["experimentalHintHex"] == hint.hex()
+
+
+def changed_hint(new_hint):
+    original = wire(discovery_vector["request"])
+    marker = b"\xe2\x80\x94 " + name + b" "
+    start = original.index(marker) + len(marker)
+    end = original.index(b"\n", start)
+    payload = base64.b64decode(original[start:end], validate=True)
+    assert payload[:4] == hint
+    changed = original[:start] + base64.b64encode(new_hint + payload[4:]) + original[end:]
+    assert len(changed) == len(original)
+    changed_payload = base64.b64decode(changed[start:end], validate=True)
+    assert changed_payload[:4] == new_hint and changed_payload[4:] == payload[4:]
+    return changed, payload
+
+
+for label, replacement in {
+    "unknownHint": bytes(4),
+    "otherHint": bytes.fromhex(discovery_vector["keys"]["other87"]["experimentalHintHex"]),
+}.items():
+    rebuilt, _ = changed_hint(replacement)
+    assert wire(discovery_vector["alteredRequests"][label]) == rebuilt
+
+other_public = key_sources["other87"][-ml_dsa_87.PUBLIC_KEY_SIZE:]
+original_payload = changed_hint(hint)[1]
+checkpoint_message = signed_input(b"log.example/response", 0, 14, mth(leaves),
+                                  int.from_bytes(original_payload[4:12], "big"))
+try:
+    ml_dsa_87.verify(other_public, checkpoint_message, original_payload[12:], context=b"")
+except InvalidSignatureError:
+    pass
+else:
+    raise AssertionError("other admitted key authenticated the checkpoint")
+
+
+def run_discovery_case(case):
+    case_hint = bytes.fromhex(case["hintHex"])
+    assert len(case_hint) == 4
+    input_wire = wire(discovery_vector["request"] if case["inputRequest"] == "original"
+                      else discovery_vector["alteredRequests"][case["inputRequest"]])
+    marker = b"\xe2\x80\x94 " + name + b" "
+    start = input_wire.index(marker) + len(marker)
+    end = input_wire.index(b"\n", start)
+    assert base64.b64decode(input_wire[start:end], validate=True)[:4] == case_hint
+    matches = [item["key"] for item in case["candidates"]
+               if item["name"].encode("utf8") == name
+               and discovery_vector["keys"][item["key"]]["algorithm"] == "ml-dsa-87"
+               and bytes.fromhex(discovery_vector["keys"][item["key"]][
+                   "experimentalHintHex"]) == case_hint]
+    if not matches:
+        expected, selected = "NOTE_KEY_UNKNOWN", None
+    elif len(matches) > 1:
+        expected, selected = "NOTE_KEY_AMBIGUOUS", None
+    else:
+        selected = matches[0]
+        expected = "VALID" if selected == "live87" else "CHECKPOINT_SIGNATURE"
+    assert (case["expected"], case["selectedKey"]) == (expected, selected)
+    emitted = wire(discovery_vector["request"]) if expected == "VALID" else b""
+    assert (case["emittedBytes"], case["emittedSha256"], case["sent"]) == (
+        len(emitted), sha(emitted), int(bool(emitted)))
+    assert case["mode"] in {"live", "frozen"}
+
+    Peer.seen = []
+    Peer.mode = case["mode"]
+    Peer.signer_input = None
+    server = HTTPServer(("127.0.0.1", 0), Peer)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        result = subprocess.run(
+            ["node", "tools/python-http-discovery-client.mjs",
+             str(server.server_port), case["id"]],
+            cwd=ROOT, capture_output=True, text=True, timeout=30, check=True)
+        actual = json.loads(result.stdout)
+        assert actual["result"] == expected, (case["id"], actual)
+        assert len(Peer.seen) == case["sent"], case["id"]
+        if Peer.seen:
+            assert Peer.seen[0] == ("POST", vector["endpoint"]["path"], emitted)
+            assert Peer.signer_input == bytes.fromhex(discovery_vector["signerInputHex"])
+            assert actual["signatureBytes"] == 4627
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=10)
+
+
+assert len(discovery_vector["cases"]) == 7
+assert len({case["id"] for case in discovery_vector["cases"]}) == 7
+for case in discovery_vector["cases"]:
+    run_discovery_case(case)
+print(f"Python witness peer and Node HTTP client: {len(vector['cases']) + len(range_vector['cases']) + len(discovery_vector['cases'])} exact cases verified")
