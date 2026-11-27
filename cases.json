@@ -361,6 +361,31 @@
       "id": "standalone-malformed-extra-signature",
       "expected": "SUBTREE_ONE_WITNESS",
       "vector": "vectors/standalone-checkpoint-bound.json"
+    },
+    {
+      "id": "proof-dense-empty",
+      "expected": "VALID",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-dense-one",
+      "expected": "VALID",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-sparse-one",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-sparse-middle",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
+    },
+    {
+      "id": "proof-accessor-changing",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/sparse-proof.json"
     }
   ]
 }

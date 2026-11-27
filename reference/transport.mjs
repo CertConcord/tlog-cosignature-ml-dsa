@@ -23,6 +23,16 @@ function requestDecimal(value) {
   requireValue(typeof value === 'bigint' || typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value)), 'SUBTREE_RANGE');
   return decimal(String(value));
 }
+function checkedProof(proof) {
+  requireValue(Array.isArray(proof) && proof.length <= 63, 'SUBTREE_REQUEST');
+  const hashes = [];
+  for (let i = 0; i < proof.length; i++) {
+    const slot = Object.getOwnPropertyDescriptor(proof, i);
+    requireValue(slot && Object.hasOwn(slot, 'value') && Buffer.isBuffer(slot.value) && slot.value.length === 32, 'SUBTREE_REQUEST');
+    hashes.push(Buffer.from(slot.value));
+  }
+  return hashes;
+}
 
 function parseCheckpoint(note, oneSignature) {
   requireValue(typeof note === 'string' && Buffer.byteLength(note) <= 1048576 && !note.includes('\r') && note.endsWith('\n'), 'CHECKPOINT_ENCODING');
@@ -75,10 +85,12 @@ function requestContext(value) {
   const cp = parseCheckpointEnvelope(value.checkpoint);
   requireValue(cp.signatures.length === 1, 'SUBTREE_ONE_WITNESS');
   const start = requestDecimal(value.start), end = requestDecimal(value.end);
-  requireValue(Buffer.isBuffer(value.root) && value.root.length === 32 && Array.isArray(value.proof) && value.proof.length <= 63 && value.proof.every(hash => Buffer.isBuffer(hash) && hash.length === 32), 'SUBTREE_REQUEST');
+  const root = value.root;
+  requireValue(Buffer.isBuffer(root) && root.length === 32, 'SUBTREE_REQUEST');
+  const proof = checkedProof(value.proof);
   requireValue(end <= cp.size, 'SUBTREE_CHECKPOINT_RANGE');
-  subtreeInput({ name: cp.signatures[0].name, origin: cp.origin, start, end, root: value.root, timestamp: 0 });
-  return { ...value, origin: cp.origin, start, end };
+  subtreeInput({ name: cp.signatures[0].name, origin: cp.origin, start, end, root, timestamp: 0 });
+  return { checkpoint: cp.note, origin: cp.origin, start, end, root: Buffer.from(root), proof };
 }
 export function encodeSubtreeRequest(value) {
   const q = requestContext(value);
