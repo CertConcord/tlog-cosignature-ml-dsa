@@ -1,4 +1,5 @@
 import { mlDsa87KeyID, subtreeInput, verifyCosignature } from './extension.mjs';
+import { types as utilTypes } from 'node:util';
 
 // This module selects one editor protocol. There is no legacy wire fallback.
 export const SUBTREE_WIRE_PROFILE = 'C2SP-20261007-MLDSA87-v2';
@@ -24,9 +25,11 @@ function requestDecimal(value) {
   return decimal(String(value));
 }
 function checkedProof(proof) {
-  requireValue(Array.isArray(proof) && proof.length <= 63, 'SUBTREE_REQUEST');
+  requireValue(Array.isArray(proof) && !utilTypes.isProxy(proof), 'SUBTREE_REQUEST');
+  const count = proof.length;
+  requireValue(count <= 63, 'SUBTREE_REQUEST');
   const hashes = [];
-  for (let i = 0; i < proof.length; i++) {
+  for (let i = 0; i < count; i++) {
     const slot = Object.getOwnPropertyDescriptor(proof, i);
     requireValue(slot && Object.hasOwn(slot, 'value') && Buffer.isBuffer(slot.value) && slot.value.length === 32, 'SUBTREE_REQUEST');
     hashes.push(Buffer.from(slot.value));

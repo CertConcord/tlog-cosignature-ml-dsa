@@ -26,9 +26,11 @@ const vectors = {
   cases: [
     { id: 'proof-dense-empty', length: 0, entries: [], expected: 'VALID', wire: 'empty' },
     { id: 'proof-dense-one', length: 1, entries: [{ index: 0, hash: 'a' }], expected: 'VALID', wire: 'one' },
-    { id: 'proof-sparse-one', length: 1, entries: [], expected: 'SUBTREE_REQUEST', forbiddenWire: 'empty' },
-    { id: 'proof-sparse-middle', length: 3, entries: [{ index: 0, hash: 'a' }, { index: 2, hash: 'b' }], expected: 'SUBTREE_REQUEST', forbiddenWire: 'two' },
-    { id: 'proof-accessor-changing', length: 1, entries: [{ index: 0, hash: 'short' }], slotKind: 'accessor-changing', expected: 'SUBTREE_REQUEST', forbiddenWire: 'short' },
+    { id: 'proof-sparse-one', length: 1, entries: [], expected: 'SUBTREE_REQUEST', emittedHashes: [], forbiddenWire: 'empty' },
+    { id: 'proof-sparse-middle', length: 3, entries: [{ index: 0, hash: 'a' }, { index: 2, hash: 'b' }], expected: 'SUBTREE_REQUEST', emittedHashes: ['a', 'b'], forbiddenWire: 'two' },
+    { id: 'proof-accessor-changing', length: 1, entries: [{ index: 0, hash: 'short' }], slotKind: 'accessor-changing', expected: 'SUBTREE_REQUEST', emittedHashes: ['short'], forbiddenWire: 'short' },
+    { id: 'proof-proxy-length-flip', length: 1, entries: [{ index: 0, hash: 'a' }], slotKind: 'proxy-length-flip', expected: 'SUBTREE_REQUEST', emittedHashes: [], forbiddenWire: 'empty' },
+    { id: 'proof-proxy-transparent', length: 1, entries: [{ index: 0, hash: 'a' }], slotKind: 'proxy-transparent', expected: 'SUBTREE_REQUEST', emittedHashes: ['a'], forbiddenWire: 'one' },
   ],
 };
 writeFileSync(join(root, 'vectors/sparse-proof.json'), JSON.stringify(vectors, null, 2) + '\n');
