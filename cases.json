@@ -1206,6 +1206,26 @@
       "id": "client-empty-fragment-before-send",
       "expected": "SUBTREE_HTTP_URL",
       "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "interop-valid",
+      "expected": "VALID",
+      "vector": "vectors/subtree-http-interop.json"
+    },
+    {
+      "id": "interop-unknown-origin",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-interop.json"
+    },
+    {
+      "id": "interop-wrong-server-key",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-interop.json"
+    },
+    {
+      "id": "interop-bad-proof-local",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-http-interop.json"
     }
   ]
 }
