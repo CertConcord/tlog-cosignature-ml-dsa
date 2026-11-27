@@ -55,6 +55,8 @@ For a checkpoint signed note, the signature payload is key_hint || uint64_be(tim
 
 ML-DSA-87 signatures contain 4627 bytes. The key is supplied as an exact admitted SPKI; a public key with another algorithm is rejected. Reference verification uses Node's cryptographic stack, not a new ML-DSA implementation.
 
+The direct `verifyCosignature` entry admits a signature only as a non-proxy Buffer with intrinsic Uint8Array identity and exactly 4,627 native bytes. It copies those bytes into an owned Buffer before pure ML-DSA-87 verification with empty context. Caller-owned `length` and `byteLength` properties cannot suppress verification of an otherwise valid signature; native short and long Buffers, proxy values and other TypedArrays disguised with Buffer's prototype return `false` before verification. Source bytes must remain stable during the synchronous copy. The signature-verifier vectors freeze the admitted SPKI, complete signed input, exact positive and negative signature bytes and ten boolean outcomes. A successful result still requires the externally admitted key and matching authenticated context; this byte admission does not itself authorize a witness.
+
 ## 4. Selected subtree transport
 
 The transport profile is `C2SP-20261007-MLDSA87-v2`, based on editor commit `a29318317776ae8a0e65ff45cfe450fd935a1aca`. This is an explicit experimental selection, not a stable C2SP release or assigned C2SP algorithm. The signing construction and experimental key hint remain `CERTCONCORD-MLDSA87-SUBTREE-v1`; changing carriage does not change the signed message.

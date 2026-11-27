@@ -101,5 +101,8 @@ export function verifyCosignature(context,signature,key) {
   const publicKey=key instanceof KeyObject&&Reflect.apply(keyRoleGetter,key,[])==='private'?createPublicKey(structuredClone(key)):key;
   const facts=publicKeyFacts(publicKey,'NOTE_KEY_SCHEME');
   requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
-  return Buffer.isBuffer(signature)&&signature.length===4627&&verify(null,subtreeInput(context),{key:facts.canonical,context:Buffer.alloc(0)},signature);
+  if(utilTypes.isProxy(signature)||!Buffer.isBuffer(signature)||!utilTypes.isUint8Array(signature)||Reflect.apply(nativeByteLength,signature,[])!==4627)return false;
+  const nativeSignature=Buffer.alloc(4627);
+  Reflect.apply(nativeSet,nativeSignature,[signature]);
+  return verify(null,subtreeInput(context),{key:facts.canonical,context:Buffer.alloc(0)},nativeSignature);
 }
