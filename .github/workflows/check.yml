@@ -37,3 +37,4 @@ jobs:
       - run: .venv-cross/bin/python tools/verify-subtree-cross-runtime-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-cross-runtime-checkpoint-vectors.py
       - run: .venv-cross/bin/python tools/verify-subtree-python-http-vectors.py
+      - run: .venv-cross/bin/python tools/verify-subtree-boundary-matrix-vectors.py
