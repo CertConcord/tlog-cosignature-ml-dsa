@@ -56,6 +56,26 @@ test('Unicode 18 White_Space and byte length are enforced without normalization'
   assert.equal(vector.unpairedSurrogate.utf16CodeUnitsHex, '0061d8000062');
 });
 
+test('UTF-8 name byte bound precedes allocation', () => {
+  const nativeFrom = Buffer.from;
+  let calls = 0;
+  Buffer.from = function(...args) {
+    calls++;
+    return Reflect.apply(nativeFrom, Buffer, args);
+  };
+  try {
+    assert.equal(c2spNameBytes(vector.boundary.name).toString('hex'),
+      vector.boundary.nameUtf8Hex);
+    assert.equal(calls, 1);
+    calls = 0;
+    assert.equal(c2spNameBytes('é'.repeat(128)), null);
+    assert.equal(c2spNameBytes('a'.repeat(256)), null);
+    assert.equal(calls, 0);
+  } finally {
+    Buffer.from = nativeFrom;
+  }
+});
+
 for (const profile of ['primary', 'boundary']) test(`signed UTF-8 checkpoint: ${profile}`, () => {
   const item = vector[profile];
   const request = Buffer.from(item.requestUtf8Hex, 'hex').toString('utf8');
