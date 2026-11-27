@@ -197,3 +197,14 @@ export function parseSubtreeResponse(text) {
   requireValue(signature.length === 4627, 'SUBTREE_SIGNATURE_LENGTH');
   return signature;
 }
+
+// The request and response share one captured admitted witness identity. A
+// parsed response alone is only encoded bytes, not an authenticated result.
+export function verifySubtreeResponse(requestText, responseText, witness) {
+  const { name, publicKey, at, maxFutureSkew } = witness;
+  const request = verifySubtreeRequest(requestText, { name, publicKey, at, maxFutureSkew });
+  const signature = parseSubtreeResponse(responseText);
+  requireValue(verifyCosignature({ name, origin: request.origin, start: request.start,
+    end: request.end, root: request.root, timestamp: 0n }, signature, publicKey), 'SUBTREE_SIGNATURE');
+  return signature;
+}
