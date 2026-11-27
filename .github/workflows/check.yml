@@ -35,3 +35,4 @@ jobs:
       - run: python3 -m venv .venv-cross
       - run: '.venv-cross/bin/python -m pip install --no-deps --only-binary=:all: --require-hashes -r tools/requirements-cross-runtime.txt'
       - run: .venv-cross/bin/python tools/verify-subtree-cross-runtime-vectors.py
+      - run: .venv-cross/bin/python tools/verify-subtree-cross-runtime-checkpoint-vectors.py
