@@ -1046,6 +1046,56 @@
       "id": "empty-surplus-proof",
       "expected": "SUBTREE_PROOF",
       "vector": "vectors/subtree-consistency.json"
+    },
+    {
+      "id": "authenticated-response",
+      "expected": "VALID",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-altered-signature",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-altered-origin",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-altered-range",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-altered-name",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-altered-root",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-other-key",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-missing-lf",
+      "expected": "SUBTREE_RESPONSE_ENCODING",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-legacy-hint-prefix",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/subtree-response-auth.json"
+    },
+    {
+      "id": "response-request-proof-altered",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-response-auth.json"
     }
   ]
 }
