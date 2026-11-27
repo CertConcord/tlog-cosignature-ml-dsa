@@ -441,6 +441,51 @@
       "id": "candidate-array-inherited-slot",
       "expected": "NOTE_KEY_CANDIDATES",
       "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-record-data-unique",
+      "expected": "VALID",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-data-duplicate",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-name-cross-mutation",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-key-cross-mutation",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-hint-mutation",
+      "expected": "VALID",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-singleton-accessor",
+      "expected": "VALID",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-two-accessors",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-inherited-name",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "candidate-record-proxy",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-record.json"
     }
   ]
 }

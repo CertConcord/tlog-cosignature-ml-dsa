@@ -14,6 +14,7 @@ Run with Node.js 24.15 or later:
     npm test
     python3 tools/verify-key-candidate-accessor-vectors.py
     python3 tools/verify-candidate-array-vectors.py
+    python3 tools/verify-candidate-record-vectors.py
 
 Original text is licensed under [CC BY 4.0](LICENSES/CC-BY-4.0.txt), software under [Apache-2.0](LICENSE), and original synthetic vectors under [CC0](LICENSES/CC0-1.0.txt). Upstream material is referenced under its own terms. See [NOTICE](NOTICE) and [contributions](CONTRIBUTING.md).
 

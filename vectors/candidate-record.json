@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "sourceSpkiVector": "vectors/key-discovery.json",
+  "requestedNameUtf8Hex": "7769746e6573732e6578616d706c65",
+  "otherNameUtf8Hex": "756e72656c617465642e6578616d706c65",
+  "keyHintHex": "0cfc3c6d",
+  "spkiSha256": {
+    "primary": "cd77e63cef6f3fd17f7a81494e15a3b670a8c1286e76a576fd9c8e5f4f6f7a38",
+    "second": "f75bf0a65aebeb4c646bcec4c61fcdea76f12b3c2850e4de331172289e9199cc",
+    "legacy44": "7480b268f1c77db9dd7c19ebd5c9cac8a6e29e104f4439ef4401785f079fc17f"
+  },
+  "cases": [
+    {
+      "id": "candidate-record-data-unique",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "other",
+          "key": "legacy44"
+        }
+      ],
+      "shape": "data",
+      "expected": "primary",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-record-data-duplicate",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "data",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "previousResult": "NOTE_KEY_AMBIGUOUS"
+    },
+    {
+      "id": "candidate-record-name-cross-mutation",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "data",
+      "mutation": "rewrite-second-name",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-record-key-cross-mutation",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "data",
+      "mutation": "replace-second-key",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-record-hint-mutation",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "data",
+      "mutation": "zero-hint",
+      "expected": "primary",
+      "previousResult": "NOTE_KEY_UNKNOWN"
+    },
+    {
+      "id": "candidate-record-singleton-accessor",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "single-accessor",
+      "expected": "primary",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-record-two-accessors",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "two-accessors",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "previousResult": "NOTE_KEY_AMBIGUOUS"
+    },
+    {
+      "id": "candidate-record-inherited-name",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "inherited-name",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-record-proxy",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "shape": "proxy",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "previousResult": "primary"
+    }
+  ]
+}

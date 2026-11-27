@@ -28,6 +28,8 @@ The reference selector reads each candidate's name and public key once. Checks a
 
 The candidate array itself has at most 64 dense, own data slots. The selector captures those slot values before reading any candidate fields, so a field accessor cannot remove a conflicting candidate, replace a later slot, or append a 65th candidate during selection. Sparse, inherited and accessor slots fail with `NOTE_KEY_CANDIDATES`. The candidate-array vectors freeze the original name, key and hint bytes alongside both accepted and rejected array transitions.
 
+Each candidate record supplies its own `name` and `publicKey` fields. The selector captures all data-field values and the four hint bytes before invoking any candidate accessor, so one accessor cannot erase a later ordinary candidate's original name or key. A registry may contain one accessor-bearing candidate; two or more cannot provide a stable cross-candidate snapshot and fail with `NOTE_KEY_CANDIDATES` before any getter runs. Inherited fields and proxy records also fail with `NOTE_KEY_CANDIDATES`. A single accessor-bearing candidate retains the first-read behavior above, including when other candidates have ordinary data fields. The candidate-record vectors freeze exact name, hint and SPKI bytes for both ML-DSA-87 and the skipped ML-DSA-44 boundary.
+
 ## 3. Signature input and checkpoint encoding
 
 Use pure ML-DSA-87 with empty context over the existing subtree input:
