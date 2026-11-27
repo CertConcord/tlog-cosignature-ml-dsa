@@ -31,3 +31,4 @@ jobs:
       - run: python3 tools/verify-subtree-http-vectors.py
       - run: python3 tools/verify-subtree-http-client-vectors.py
       - run: python3 tools/verify-subtree-http-interop-vectors.py
+      - run: python3 tools/verify-subtree-live-sign-vectors.py
