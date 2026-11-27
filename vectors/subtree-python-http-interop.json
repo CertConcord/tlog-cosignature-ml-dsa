@@ -48,6 +48,11 @@
       "utf8Hex": "",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "redirect302": {
+      "utf8Hex": "",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   },
   "wrongMessageSignatureSha256": "ecbe2aa22f0d170a82b71f5e99883956daf201d34eef92b8252990152b08384f",
@@ -84,6 +89,13 @@
       "sent": true,
       "expected": "SUBTREE_HTTP_STATUS",
       "status": 403
+    },
+    {
+      "id": "python-http-redirect-302",
+      "mode": "redirect-302",
+      "sent": true,
+      "expected": "SUBTREE_HTTP_STATUS",
+      "status": 302
     },
     {
       "id": "python-http-bad-proof-local",

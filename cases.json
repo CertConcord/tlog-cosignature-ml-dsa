@@ -1386,6 +1386,11 @@
       "id": "python-http-raw-carriage-return",
       "expected": "HTTP_400",
       "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-redirect-302",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-python-http-interop.json"
     }
   ]
 }

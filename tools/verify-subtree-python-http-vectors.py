@@ -174,6 +174,8 @@ class Peer(BaseHTTPRequestHandler):
                 status = 200
             elif self.mode == "status-403":
                 status, body = 403, wire(vector["bodies"]["status403"])
+            elif self.mode == "redirect-302":
+                status, body = 302, wire(vector["bodies"]["redirect302"])
             else:
                 body = wire(vector["bodies"][{
                     "frozen": "frozen", "wrong-message": "wrongMessage",
@@ -184,6 +186,8 @@ class Peer(BaseHTTPRequestHandler):
             status, body = error.status, b""
         self.send_response(status)
         self.send_header("Content-Length", str(len(body)))
+        if self.mode == "redirect-302":
+            self.send_header("Location", "/unexpected")
         self.end_headers()
         self.wfile.write(body)
 
