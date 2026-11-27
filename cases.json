@@ -506,6 +506,71 @@
       "id": "candidate-record-proxy",
       "expected": "NOTE_KEY_CANDIDATES",
       "vector": "vectors/candidate-record.json"
+    },
+    {
+      "id": "keyobject-normal-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shadowed-algorithm-44",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shadowed-export-44",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shadowed-type-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shadowed-algorithm-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shadowed-export-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-prototype-44",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-shared-prototype-shadow-44",
+      "expected": "NOTE_KEY_UNKNOWN",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-proxy-87",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-hint-shadowed-44",
+      "expected": "NOTE_KEY_SCHEME",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-hint-shadowed-export-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-verify-shadowed-44",
+      "expected": "NOTE_KEY_SCHEME",
+      "vector": "vectors/keyobject-boundary.json"
+    },
+    {
+      "id": "keyobject-verify-shadowed-87",
+      "expected": "VALID",
+      "vector": "vectors/keyobject-boundary.json"
     }
   ]
 }

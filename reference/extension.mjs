@@ -1,17 +1,37 @@
-import {createHash,createPublicKey,KeyObject,verify} from 'node:crypto';
+import {createHash,createPublicKey,generateKeyPairSync,KeyObject,verify} from 'node:crypto';
 import {types as utilTypes} from 'node:util';
 const requireValue = (condition,code) => {if(!condition){const e=new Error(code);e.code=code;throw e;}};
+const keyRoleGetter=Object.getOwnPropertyDescriptor(KeyObject.prototype,'type').get;
+const {publicKey:prototypeKey}=generateKeyPairSync('ed25519');
+const nativePublicPrototype=Object.getPrototypeOf(prototypeKey);
+const nativeAsymmetricPrototype=Object.getPrototypeOf(nativePublicPrototype);
+const nativePublicExport=Object.getOwnPropertyDescriptor(nativePublicPrototype,'export').value;
+const nativeAlgorithmGetter=Object.getOwnPropertyDescriptor(nativeAsymmetricPrototype,'asymmetricKeyType').get;
+const hintFromSpki=(name,spki) => createHash('sha256').update(Buffer.concat([
+  Buffer.from('certconcord/tlog-ml-dsa-87/v1\n'),Buffer.from(name+'\n'),spki,
+])).digest().subarray(0,4);
+const publicKeyFacts=(key,code) => {
+  requireValue(key instanceof KeyObject&&!utilTypes.isProxy(key),code);
+  requireValue(Reflect.apply(keyRoleGetter,key,[])==='public',code);
+  requireValue(Object.getPrototypeOf(key)===nativePublicPrototype,code);
+  const spki=Reflect.apply(nativePublicExport,key,[{type:'spki',format:'der'}]);
+  requireValue(Buffer.isBuffer(spki),code);
+  const canonical=createPublicKey({key:spki,type:'spki',format:'der'});
+  requireValue(Object.getPrototypeOf(canonical)===nativePublicPrototype,code);
+  const algorithm=Reflect.apply(nativeAlgorithmGetter,key,[]);
+  requireValue(algorithm===Reflect.apply(nativeAlgorithmGetter,canonical,[]),code);
+  return {algorithm,spki};
+};
 const exactInteger = n => {requireValue(typeof n==='bigint'||(typeof n==='number'&&Number.isSafeInteger(n)),'SUBTREE_INTEGER');return BigInt(n);};
 const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
 const text = s => {requireValue(typeof s==='string'&&/^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(s),'SUBTREE_NAME');const b=Buffer.from(s);return Buffer.concat([Buffer.from([b.length]),b]);};
 export function mlDsa87KeyID(name,key) {
   text(name);
-  const publicKey=key.type==='public'?key:createPublicKey(key);
-  requireValue(publicKey.asymmetricKeyType==='ml-dsa-87','NOTE_KEY_SCHEME');
-  return createHash('sha256').update(Buffer.concat([
-    Buffer.from('certconcord/tlog-ml-dsa-87/v1\n'),Buffer.from(name+'\n'),
-    publicKey.export({type:'spki',format:'der'}),
-  ])).digest().subarray(0,4);
+  if(key instanceof KeyObject)requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
+  const publicKey=key instanceof KeyObject&&Reflect.apply(keyRoleGetter,key,[])==='public'?key:createPublicKey(key instanceof KeyObject?structuredClone(key):key);
+  const facts=publicKeyFacts(publicKey,'NOTE_KEY_SCHEME');
+  requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
+  return hintFromSpki(name,facts.spki);
 }
 // The caller admits the candidates and selects this experimental profile first.
 // A four-byte hint cannot establish trust or resolve a collision by itself.
@@ -52,9 +72,9 @@ export function selectMlDsa87Key(name,keyHint,candidates) {
     const currentKeyField=accessor?Object.getOwnPropertyDescriptor(candidate,'publicKey'):keyField;
     requireValue(currentKeyField,'NOTE_KEY_CANDIDATES');
     const publicKey=fieldValue(candidate,currentKeyField);
-    requireValue(publicKey instanceof KeyObject&&publicKey.type==='public','NOTE_KEY_CANDIDATES');
-    if(publicKey.asymmetricKeyType!=='ml-dsa-87')continue;
-    if(!mlDsa87KeyID(name,publicKey).equals(admittedHint))continue;
+    const facts=publicKeyFacts(publicKey,'NOTE_KEY_CANDIDATES');
+    if(facts.algorithm!=='ml-dsa-87')continue;
+    if(!hintFromSpki(name,facts.spki).equals(admittedHint))continue;
     requireValue(selected===undefined,'NOTE_KEY_AMBIGUOUS');
     selected=publicKey;
   }
@@ -69,6 +89,7 @@ export function subtreeInput({name,origin,start=0n,end,root,timestamp=0}) {
   return Buffer.concat([Buffer.from('subtree/v1\n\0'),text(name),u64(timestamp),text(origin),u64(start),u64(end),root]);
 }
 export function verifyCosignature(context,signature,key) {
-  requireValue(key.asymmetricKeyType==='ml-dsa-87','NOTE_KEY_SCHEME');
+  const facts=publicKeyFacts(key,'NOTE_KEY_SCHEME');
+  requireValue(facts.algorithm==='ml-dsa-87','NOTE_KEY_SCHEME');
   return Buffer.isBuffer(signature)&&signature.length===4627&&verify(null,subtreeInput(context),key,signature);
 }

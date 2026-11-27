@@ -7,6 +7,7 @@
     "vectors/key-candidate-accessors.json": "3e0418d24fd44b09772f8a95d0caa6fb425d9f3d73b1b6ce824c23af81c21174",
     "vectors/candidate-array.json": "e768ff6625097b64ddb866500c701263a79797f3b9ad713bf63b2d0c2c517942",
     "vectors/candidate-record.json": "27ce3ead1d45e4837c54bee1a94d1f6b582387ec15ef5edffb9b680b532aa4c8",
+    "vectors/keyobject-boundary.json": "ee76bcf378b8e39bf6e07e76fba3686ed4ae1946efc2acb2a0735a72105dd55d",
     "vectors/integer-boundaries.json": "178ff4a65fbb16b9c32ac44ab465de06ed43767f326e69747a92249387a817d8",
     "vectors/integer-input-types.json": "d99fdaf5e79cae8c48622259f9b27c87b0dfec9e579284ae55efcf6d9e2dd95e",
     "vectors/request-input-types.json": "2042c11103056d85bbf46321f2eadedeecdcfdb39d67fcc42021eee3447afe40",
