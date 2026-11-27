@@ -70,6 +70,7 @@
   ],
   "reviewNotes": [
     "MTC revision 07 was published on 7 October 2026 as an active Internet-Draft, not an RFC. Its assigned OIDs change certificate bytes; preserved evidence requires its original exact verifier.",
+    "The independently compared official MTC draft-08 text has SHA-256 fe50c3576e3f6f6891e43324a0dc16aa6ca56869ae5a6b9c94051ebd0895b9d1. Its subtree and cosignature wire semantics are compatible with the selected draft-07; it moves the trust-anchor-ID definition to a separate draft. Retain the evaluated draft-07 source pin.",
     "The retained mtcEditor snapshot is a historical comparison, not the latest published baseline.",
     "C2SP published signed-note, tlog-checkpoint, tlog-cosignature and tlog-witness v1.1.0 on 7 October 2026. Comparison a29318317776ae8a0e65ff45cfe450fd935a1aca...b2dd9892338af7009733a4575a6da05811ffae6c changes links and references only; retain the evaluated source bytes and unchanged ML-DSA-87 contract.",
     "The selected C2SP checkpoint uses the RFC 6962 SHA-256 Merkle tree hash. RFC 6962 Section 2.1 supplies the empty and internal-node hash operations for the new standalone subtree consistency verifier; the source was fetched from the official RFC Editor text endpoint."
