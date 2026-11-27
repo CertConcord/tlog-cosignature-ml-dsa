@@ -656,6 +656,56 @@
       "id": "proof-buffer-revoked-proxy",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/proof-buffer.json"
+    },
+    {
+      "id": "root-buffer-plain",
+      "expected": "VALID",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-shadow-length-16",
+      "expected": "VALID",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-native-short-spoof",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-native-long-spoof",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-uint16-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-uint32-buffer-prototype",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-proxy",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "root-buffer-revoked-proxy",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/root-buffer.json"
     }
   ]
 }
