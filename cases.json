@@ -706,6 +706,51 @@
       "id": "root-buffer-revoked-proxy",
       "expected": "SUBTREE_REQUEST",
       "vector": "vectors/root-buffer.json"
+    },
+    {
+      "id": "response-buffer-plain",
+      "expected": "VALID",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-shadow-length-16",
+      "expected": "VALID",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-native-short-spoof",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-native-long-spoof",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-uint16-buffer-prototype",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-proxy",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/response-buffer.json"
+    },
+    {
+      "id": "response-buffer-revoked-proxy",
+      "expected": "SUBTREE_SIGNATURE_LENGTH",
+      "vector": "vectors/response-buffer.json"
     }
   ]
 }

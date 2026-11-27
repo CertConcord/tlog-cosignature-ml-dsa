@@ -19,6 +19,7 @@ Run with Node.js 24.15 or later:
     python3 tools/verify-proof-array-vectors.py
     python3 tools/verify-proof-buffer-vectors.py
     python3 tools/verify-root-buffer-vectors.py
+    python3 tools/verify-response-buffer-vectors.py
 
 Original text is licensed under [CC BY 4.0](LICENSES/CC-BY-4.0.txt), software under [Apache-2.0](LICENSE), and original synthetic vectors under [CC0](LICENSES/CC0-1.0.txt). Upstream material is referenced under its own terms. See [NOTICE](NOTICE) and [contributions](CONTRIBUTING.md).
 

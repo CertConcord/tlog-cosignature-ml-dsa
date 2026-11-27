@@ -136,8 +136,10 @@ export function verifySubtreeCheckpoint(checkpoint, { name, publicKey, at, maxFu
   return cp;
 }
 export function encodeSubtreeResponse(signature) {
-  requireValue(Buffer.isBuffer(signature) && signature.length === 4627, 'SUBTREE_SIGNATURE_LENGTH');
-  return signature.toString('base64') + '\n';
+  requireValue(!utilTypes.isProxy(signature) && Buffer.isBuffer(signature) && utilTypes.isUint8Array(signature) && Reflect.apply(nativeByteLength, signature, []) === 4627, 'SUBTREE_SIGNATURE_LENGTH');
+  const bytes = Buffer.alloc(4627);
+  Reflect.apply(nativeSet, bytes, [signature]);
+  return bytes.toString('base64') + '\n';
 }
 export function parseSubtreeResponse(text) {
   requireValue(typeof text === 'string' && text.length <= 8192 && /^[A-Za-z0-9+/]+={0,2}\n$/.test(text), 'SUBTREE_RESPONSE_ENCODING');
