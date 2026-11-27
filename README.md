@@ -34,8 +34,9 @@ Run with Node.js 24.15 or later:
     python3 tools/verify-subtree-live-sign-vectors.py
     python3 tools/verify-subtree-cross-runtime-vectors.py
     python3 tools/verify-subtree-cross-runtime-checkpoint-vectors.py
+    python3 tools/verify-subtree-python-http-vectors.py
 
-The last two verifiers use the test-only `pqcrypto` 1.0.0 package. Install it in a virtual environment with the wheel hashes in `tools/requirements-cross-runtime.txt` before running them. CI uses a separate virtual environment for these checks.
+The last three verifiers use the test-only `pqcrypto` 1.0.0 package. Install it in a virtual environment with the wheel hashes in `tools/requirements-cross-runtime.txt` before running them. The final verifier also starts a loopback Python witness peer and invokes the Node HTTP client. CI uses a separate virtual environment for these checks.
 
 Original text is licensed under [CC BY 4.0](LICENSES/CC-BY-4.0.txt), software under [Apache-2.0](LICENSE), and original synthetic vectors under [CC0](LICENSES/CC0-1.0.txt). Upstream material is referenced under its own terms. See [NOTICE](NOTICE) and [contributions](CONTRIBUTING.md).
 

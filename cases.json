@@ -1341,6 +1341,51 @@
       "id": "cross-python-checkpoint-mldsa44-key",
       "expected": "NOTE_KEY_SCHEME",
       "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "python-http-frozen-response",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-live-response",
+      "expected": "VALID",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-wrong-message-response",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-missing-response-lf",
+      "expected": "SUBTREE_RESPONSE_ENCODING",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-status-403",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-bad-proof-local",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-raw-bad-checkpoint",
+      "expected": "HTTP_403",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-raw-bad-proof",
+      "expected": "HTTP_422",
+      "vector": "vectors/subtree-python-http-interop.json"
+    },
+    {
+      "id": "python-http-raw-carriage-return",
+      "expected": "HTTP_400",
+      "vector": "vectors/subtree-python-http-interop.json"
     }
   ]
 }
