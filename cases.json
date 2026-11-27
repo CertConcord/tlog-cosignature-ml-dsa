@@ -841,6 +841,56 @@
       "id": "key-hint-buffer-revoked-proxy",
       "expected": "NOTE_KEY_ID",
       "vector": "vectors/key-hint-buffer.json"
+    },
+    {
+      "id": "verify-signature-plain",
+      "expected": "VALID",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-shadow-length-16",
+      "expected": "VALID",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-shadow-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-shadow-byte-length-throws",
+      "expected": "VALID",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-corrupted",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-native-short-spoof",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-native-long-spoof",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-uint16-buffer-prototype",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-proxy",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
+    },
+    {
+      "id": "verify-signature-revoked-proxy",
+      "expected": "VERIFY_FALSE",
+      "vector": "vectors/signature-verify-buffer.json"
     }
   ]
 }
