@@ -1271,6 +1271,76 @@
       "id": "cross-python-signature-bad-context",
       "expected": "INVALID_SIGNATURE",
       "vector": "vectors/subtree-cross-runtime.json"
+    },
+    {
+      "id": "cross-python-checkpoint-node-verify",
+      "expected": "VALID",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-and-response-node-verify",
+      "expected": "VALID",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-bad-key-id",
+      "expected": "SUBTREE_WITNESS_KEY",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-bad-timestamp",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-future-timestamp",
+      "expected": "CHECKPOINT_FUTURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-bad-signature",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-short-signature",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-missing-padding",
+      "expected": "SUBTREE_BASE64",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-base64url",
+      "expected": "CHECKPOINT_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-carriage-return",
+      "expected": "SUBTREE_REQUEST",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-second-signature",
+      "expected": "SUBTREE_ONE_WITNESS",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-duplicate-signature",
+      "expected": "CHECKPOINT_DUPLICATE_SIGNATURE",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-bad-proof",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
+    },
+    {
+      "id": "cross-python-checkpoint-mldsa44-key",
+      "expected": "NOTE_KEY_SCHEME",
+      "vector": "vectors/subtree-cross-runtime-checkpoint.json"
     }
   ]
 }

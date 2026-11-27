@@ -29,6 +29,7 @@
     "vectors/subtree-http-client.json": "5e515dfa027559373eda9cc4df79e449c112eb6d2baeb647ebcda7c9171b7c95",
     "vectors/subtree-http-interop.json": "ad66f2b07ae2604b50ae1cc884a17a30734bad292575abd5818c1980cfb56606",
     "vectors/subtree-live-sign.json": "96a075a91f931f578693432e4853f7c4462ec9be08b408dcb4ae81cff439c152",
-    "vectors/subtree-cross-runtime.json": "f88171c1de5e3ed169f19327fb75543d04aa414f82c1a66587ba115489c8afd3"
+    "vectors/subtree-cross-runtime.json": "f88171c1de5e3ed169f19327fb75543d04aa414f82c1a66587ba115489c8afd3",
+    "vectors/subtree-cross-runtime-checkpoint.json": "d10c8d638c267ec01219a6265240126bef9d3bce86feeb4fb92dcf52596739f1"
   }
 }
