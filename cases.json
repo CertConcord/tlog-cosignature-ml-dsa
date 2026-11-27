@@ -1141,6 +1141,71 @@
       "id": "http-short-signer-signature",
       "expected": "SUBTREE_SIGNATURE_LENGTH",
       "vector": "vectors/subtree-http.json"
+    },
+    {
+      "id": "client-valid",
+      "expected": "VALID",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-bad-signature",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-missing-lf",
+      "expected": "SUBTREE_RESPONSE_ENCODING",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-leading-bom",
+      "expected": "SUBTREE_RESPONSE_ENCODING",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-oversized-response",
+      "expected": "SUBTREE_HTTP_BODY_LIMIT",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-proof-invalid-before-send",
+      "expected": "SUBTREE_PROOF",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-unprocessable-status",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-forbidden-status",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-unknown-origin-status",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-redirect-status-no-follow",
+      "expected": "SUBTREE_HTTP_STATUS",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-bad-prefix-before-send",
+      "expected": "SUBTREE_HTTP_URL",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-empty-query-before-send",
+      "expected": "SUBTREE_HTTP_URL",
+      "vector": "vectors/subtree-http-client.json"
+    },
+    {
+      "id": "client-empty-fragment-before-send",
+      "expected": "SUBTREE_HTTP_URL",
+      "vector": "vectors/subtree-http-client.json"
     }
   ]
 }
