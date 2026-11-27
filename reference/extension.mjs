@@ -1,5 +1,6 @@
 import {createHash,createPublicKey,generateKeyPairSync,KeyObject,verify} from 'node:crypto';
 import {types as utilTypes} from 'node:util';
+import {c2spNameBytes} from './name.mjs';
 const typedArrayProto=Object.getPrototypeOf(Uint8Array.prototype);
 const nativeByteLength=Object.getOwnPropertyDescriptor(typedArrayProto,'byteLength').get;
 const nativeSet=Uint8Array.prototype.set;
@@ -29,7 +30,7 @@ const publicKeyFacts=(key,code) => {
 };
 const exactInteger = n => {requireValue(typeof n==='bigint'||(typeof n==='number'&&Number.isSafeInteger(n)),'SUBTREE_INTEGER');return BigInt(n);};
 const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
-const text = s => {requireValue(typeof s==='string'&&/^[\x21-\x2a\x2c-\x7e]{1,255}$/.test(s),'SUBTREE_NAME');const b=Buffer.from(s);return Buffer.concat([Buffer.from([b.length]),b]);};
+const text = s => {const b=c2spNameBytes(s);requireValue(b!==null,'SUBTREE_NAME');return Buffer.concat([Buffer.from([b.length]),b]);};
 export function mlDsa87KeyID(name,key) {
   text(name);
   requireValue(!utilTypes.isProxy(key),'NOTE_KEY_SCHEME');
