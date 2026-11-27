@@ -52,8 +52,15 @@ for (const item of vectors.cases) {
     } else {
       assert.equal(item.expected, 'SUBTREE_REQUEST');
       const cut = sourceWire.indexOf('\n\n');
-      const forbiddenWire = sourceWire.slice(0, cut) + item.emittedHashes.map(hash => '\n' + Buffer.from(vectors.hashes[hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
-      assert.equal(Buffer.from(forbiddenWire).toString('hex'), vectors.wires[item.forbiddenWire].hex);
+      if (item.slotKind === 'proxy-revoked') {
+        assert.deepEqual(item.previousOutcome, { kind: 'error', name: 'TypeError', wire: null });
+        assert.throws(() => Array.isArray(proof), TypeError);
+        const comparisonWire = sourceWire.slice(0, cut) + item.entries.map(entry => '\n' + Buffer.from(vectors.hashes[entry.hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
+        assert.equal(Buffer.from(comparisonWire).toString('hex'), vectors.wires[item.comparisonWire].hex);
+      } else {
+        const forbiddenWire = sourceWire.slice(0, cut) + item.emittedHashes.map(hash => '\n' + Buffer.from(vectors.hashes[hash], 'hex').toString('base64')).join('') + sourceWire.slice(cut);
+        assert.equal(Buffer.from(forbiddenWire).toString('hex'), vectors.wires[item.forbiddenWire].hex);
+      }
       assert.throws(() => encodeSubtreeRequest(request), { code: item.expected });
     }
   });

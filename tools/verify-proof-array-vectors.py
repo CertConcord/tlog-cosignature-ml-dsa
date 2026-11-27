@@ -1,4 +1,4 @@
-"""Independent byte replay for proof-array admission and rejected wire output."""
+"""Independent byte replay for proof-array admission and wire comparisons."""
 
 import base64
 import hashlib
@@ -37,17 +37,24 @@ expected_cases = {
 }
 assert len(vectors["cases"]) == len(expected_cases)
 for case in vectors["cases"]:
-    expected, key, emitted = expected_cases.pop(case["id"])
+    expected, key, wire_hashes = expected_cases.pop(case["id"])
     assert case["expected"] == expected, case["id"]
-    assert case.get("wire", case.get("forbiddenWire")) == key, case["id"]
+    if case["id"] == "proof-proxy-revoked":
+        assert case["comparisonWire"] == key
+        assert case["previousOutcome"] == {"kind": "error", "name": "TypeError", "wire": None}
+        assert "forbiddenWire" not in case and "emittedHashes" not in case
+    else:
+        assert case.get("wire", case.get("forbiddenWire")) == key, case["id"]
     assert [entry["index"] for entry in case["entries"]] == sorted(entry["index"] for entry in case["entries"]), case["id"]
     assert all(0 <= entry["index"] < case["length"] for entry in case["entries"]), case["id"]
     if expected == "VALID":
         assert len(case["entries"]) == case["length"], case["id"]
-        assert [entry["hash"] for entry in case["entries"]] == emitted, case["id"]
+        assert [entry["hash"] for entry in case["entries"]] == wire_hashes, case["id"]
+    elif case["id"] != "proof-proxy-revoked":
+        assert case["emittedHashes"] == wire_hashes, case["id"]
     else:
-        assert case["emittedHashes"] == emitted, case["id"]
-    assert wire(emitted).hex() == vectors["wires"][key]["hex"], case["id"]
+        assert [entry["hash"] for entry in case["entries"]] == wire_hashes, case["id"]
+    assert wire(wire_hashes).hex() == vectors["wires"][key]["hex"], case["id"]
 
 assert not expected_cases
 assert vectors["cases"][-3]["slotKind"] == "proxy-length-flip"

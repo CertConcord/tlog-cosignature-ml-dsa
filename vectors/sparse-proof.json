@@ -130,10 +130,12 @@
       ],
       "slotKind": "proxy-revoked",
       "expected": "SUBTREE_REQUEST",
-      "emittedHashes": [
-        "a"
-      ],
-      "forbiddenWire": "one"
+      "previousOutcome": {
+        "kind": "error",
+        "name": "TypeError",
+        "wire": null
+      },
+      "comparisonWire": "one"
     }
   ]
 }
