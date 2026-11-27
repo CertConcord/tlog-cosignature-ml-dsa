@@ -15,3 +15,4 @@ jobs:
       - run: python3 tools/verify-key-candidate-accessor-vectors.py
       - run: python3 tools/verify-candidate-array-vectors.py
       - run: python3 tools/verify-candidate-record-vectors.py
+      - run: python3 tools/verify-keyobject-boundary-vectors.py
