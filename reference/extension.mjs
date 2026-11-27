@@ -1,4 +1,5 @@
 import {createHash,createPublicKey,KeyObject,verify} from 'node:crypto';
+import {types as utilTypes} from 'node:util';
 const requireValue = (condition,code) => {if(!condition){const e=new Error(code);e.code=code;throw e;}};
 const exactInteger = n => {requireValue(typeof n==='bigint'||(typeof n==='number'&&Number.isSafeInteger(n)),'SUBTREE_INTEGER');return BigInt(n);};
 const u64 = n => {n=exactInteger(n);requireValue(n>=0n&&n<=0xffffffffffffffffn,'SUBTREE_INTEGER');const b=Buffer.alloc(8);b.writeBigUInt64BE(n);return b;};
@@ -17,7 +18,8 @@ export function mlDsa87KeyID(name,key) {
 export function selectMlDsa87Key(name,keyHint,candidates) {
   text(name);
   requireValue(Buffer.isBuffer(keyHint)&&keyHint.length===4,'NOTE_KEY_ID');
-  requireValue(Array.isArray(candidates),'NOTE_KEY_CANDIDATES');
+  requireValue(Array.isArray(candidates)&&!utilTypes.isProxy(candidates),'NOTE_KEY_CANDIDATES');
+  const admittedHint=Buffer.from(keyHint);
   const count=candidates.length;
   requireValue(count<=64,'NOTE_KEY_CANDIDATES');
   const entries=[];
@@ -26,16 +28,33 @@ export function selectMlDsa87Key(name,keyHint,candidates) {
     requireValue(slot&&Object.hasOwn(slot,'value'),'NOTE_KEY_CANDIDATES');
     entries.push(slot.value);
   }
-  let selected;
+  const records=[];
+  let accessorRecords=0;
   for(const candidate of entries) {
-    requireValue(candidate&&typeof candidate==='object','NOTE_KEY_CANDIDATES');
-    const candidateName=candidate.name;
+    requireValue(candidate&&typeof candidate==='object'&&!utilTypes.isProxy(candidate),'NOTE_KEY_CANDIDATES');
+    const nameField=Object.getOwnPropertyDescriptor(candidate,'name');
+    const keyField=Object.getOwnPropertyDescriptor(candidate,'publicKey');
+    requireValue(nameField&&keyField,'NOTE_KEY_CANDIDATES');
+    const accessor=!Object.hasOwn(nameField,'value')||!Object.hasOwn(keyField,'value');
+    if(accessor)accessorRecords++;
+    records.push({candidate,nameField,keyField,accessor});
+  }
+  requireValue(accessorRecords<=1,'NOTE_KEY_CANDIDATES');
+  const fieldValue=(candidate,field) => {
+    if(Object.hasOwn(field,'value'))return field.value;
+    return field.get===undefined?undefined:Reflect.apply(field.get,candidate,[]);
+  };
+  let selected;
+  for(const {candidate,nameField,keyField,accessor} of records) {
+    const candidateName=fieldValue(candidate,nameField);
     requireValue(typeof candidateName==='string','NOTE_KEY_CANDIDATES');
     if(candidateName!==name)continue;
-    const publicKey=candidate.publicKey;
+    const currentKeyField=accessor?Object.getOwnPropertyDescriptor(candidate,'publicKey'):keyField;
+    requireValue(currentKeyField,'NOTE_KEY_CANDIDATES');
+    const publicKey=fieldValue(candidate,currentKeyField);
     requireValue(publicKey instanceof KeyObject&&publicKey.type==='public','NOTE_KEY_CANDIDATES');
     if(publicKey.asymmetricKeyType!=='ml-dsa-87')continue;
-    if(!mlDsa87KeyID(name,publicKey).equals(keyHint))continue;
+    if(!mlDsa87KeyID(name,publicKey).equals(admittedHint))continue;
     requireValue(selected===undefined,'NOTE_KEY_AMBIGUOUS');
     selected=publicKey;
   }
