@@ -1226,6 +1226,26 @@
       "id": "interop-bad-proof-local",
       "expected": "SUBTREE_PROOF",
       "vector": "vectors/subtree-http-interop.json"
+    },
+    {
+      "id": "live-signer-loopback",
+      "expected": "VALID",
+      "vector": "vectors/subtree-live-sign.json"
+    },
+    {
+      "id": "frozen-signer-response",
+      "expected": "VALID",
+      "vector": "vectors/subtree-live-sign.json"
+    },
+    {
+      "id": "wrong-message-signer",
+      "expected": "SUBTREE_SIGNER_SIGNATURE",
+      "vector": "vectors/subtree-live-sign.json"
+    },
+    {
+      "id": "wrong-message-response",
+      "expected": "SUBTREE_SIGNATURE",
+      "vector": "vectors/subtree-live-sign.json"
     }
   ]
 }
