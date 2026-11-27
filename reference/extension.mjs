@@ -17,9 +17,17 @@ export function mlDsa87KeyID(name,key) {
 export function selectMlDsa87Key(name,keyHint,candidates) {
   text(name);
   requireValue(Buffer.isBuffer(keyHint)&&keyHint.length===4,'NOTE_KEY_ID');
-  requireValue(Array.isArray(candidates)&&candidates.length<=64,'NOTE_KEY_CANDIDATES');
+  requireValue(Array.isArray(candidates),'NOTE_KEY_CANDIDATES');
+  const count=candidates.length;
+  requireValue(count<=64,'NOTE_KEY_CANDIDATES');
+  const entries=[];
+  for(let i=0;i<count;i++) {
+    const slot=Object.getOwnPropertyDescriptor(candidates,i);
+    requireValue(slot&&Object.hasOwn(slot,'value'),'NOTE_KEY_CANDIDATES');
+    entries.push(slot.value);
+  }
   let selected;
-  for(const candidate of candidates) {
+  for(const candidate of entries) {
     requireValue(candidate&&typeof candidate==='object','NOTE_KEY_CANDIDATES');
     const candidateName=candidate.name;
     requireValue(typeof candidateName==='string','NOTE_KEY_CANDIDATES');

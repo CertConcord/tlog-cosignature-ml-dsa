@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "profile": "CERTCONCORD-MLDSA87-SUBTREE-v1",
+  "sourceSpkiVector": "vectors/key-discovery.json",
+  "requestedNameUtf8Hex": "7769746e6573732e6578616d706c65",
+  "otherNameUtf8Hex": "756e72656c617465642e6578616d706c65",
+  "keyHintHex": "0cfc3c6d",
+  "spkiSha256": {
+    "primary": "cd77e63cef6f3fd17f7a81494e15a3b670a8c1286e76a576fd9c8e5f4f6f7a38",
+    "second": "f75bf0a65aebeb4c646bcec4c61fcdea76f12b3c2850e4de331172289e9199cc",
+    "legacy44": "7480b268f1c77db9dd7c19ebd5c9cac8a6e29e104f4439ef4401785f079fc17f"
+  },
+  "cases": [
+    {
+      "id": "candidate-array-dense",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "slotKind": "data",
+      "expected": "primary",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-array-remove-duplicate",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "slotKind": "data",
+      "mutation": "pop-on-first-name",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-array-replace-duplicate",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "slotKind": "data",
+      "mutation": "replace-on-first-name",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-array-append-at-cap",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        },
+        {
+          "name": "other",
+          "key": "second"
+        }
+      ],
+      "slotKind": "data",
+      "mutation": "append-on-first-name",
+      "expected": "primary",
+      "previousResult": "NOTE_KEY_AMBIGUOUS"
+    },
+    {
+      "id": "candidate-array-accessor-slot",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "slotKind": "accessor",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "previousResult": "primary"
+    },
+    {
+      "id": "candidate-array-inherited-slot",
+      "initial": [
+        {
+          "name": "requested",
+          "key": "primary"
+        }
+      ],
+      "slotKind": "inherited",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "previousResult": "primary"
+    }
+  ]
+}

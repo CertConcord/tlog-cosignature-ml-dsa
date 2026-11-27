@@ -411,6 +411,36 @@
       "id": "candidate-name-early-other",
       "expected": "NOTE_KEY_UNKNOWN",
       "vector": "vectors/key-candidate-accessors.json"
+    },
+    {
+      "id": "candidate-array-dense",
+      "expected": "VALID",
+      "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-array-remove-duplicate",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-array-replace-duplicate",
+      "expected": "NOTE_KEY_AMBIGUOUS",
+      "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-array-append-at-cap",
+      "expected": "VALID",
+      "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-array-accessor-slot",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-array.json"
+    },
+    {
+      "id": "candidate-array-inherited-slot",
+      "expected": "NOTE_KEY_CANDIDATES",
+      "vector": "vectors/candidate-array.json"
     }
   ]
 }
